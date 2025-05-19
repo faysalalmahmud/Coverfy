@@ -46,7 +46,7 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
                 width={70} 
                 height={70} 
                 className="object-contain"
-                // crossOrigin="anonymous" // Not needed for local images
+                // crossOrigin="anonymous" // Not needed for local images or data URIs
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.src = "https://placehold.co/70x70.png?text=Error";

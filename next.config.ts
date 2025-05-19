@@ -25,31 +25,12 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'placehold.co',
+        hostname: 'placehold.co', // For placeholder images
         port: '',
         pathname: '/**',
       },
-      // school360.xyz and drive.google.com can be removed if only used for the logo,
-      // as local images don't need to be listed here.
-      // Keeping them in case they are used for other images elsewhere.
-      {
-        protocol: 'https',
-        hostname: 'sfmu.edu.bd', // Can be removed if no other images from sfmu.edu.bd are used
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'school360.xyz',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'drive.google.com',
-        port: '',
-        pathname: '/**',
-      }
+      // sfmu.edu.bd, school360.xyz and drive.google.com are removed as the logo is now local.
+      // Add them back if they are used for other images elsewhere.
     ],
   },
 };
