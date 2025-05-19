@@ -24,16 +24,16 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
     <div 
       ref={ref} 
       id="coverPageA4"
-      className="a4-preview bg-white text-black p-12 shadow-lg mx-auto border border-gray-300 flex flex-col"
+      className="a4-preview bg-white text-black p-8 shadow-lg mx-auto border-2 border-black flex flex-col"
       style={{
         width: '210mm', 
         minHeight: '297mm', 
         boxSizing: 'border-box',
-        fontFamily: "'Times New Roman', Times, serif", // Updated font family
+        fontFamily: "'Times New Roman', Times, serif",
       }}
     >
       {/* University Header */}
-      <div className="text-center mb-8">
+      <div className="text-center mb-6">
         <Image 
             src={logoSrc} 
             alt="University Logo" 
@@ -52,46 +52,46 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
 
       {/* Report Type */}
       {data.reportType && (
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <h2 className="text-xl font-bold inline-block border-b-2 border-black pb-1">{data.reportType}</h2>
         </div>
       )}
 
       {/* Course Details */}
       {(data.courseTitle || data.courseCode) && (
-        <div className="mb-10 text-lg space-y-1">
+        <div className="mb-6 text-lg space-y-1 text-center">
           {data.courseTitle && <p><span className="font-semibold">Course Title:</span> {data.courseTitle}</p>}
           {data.courseCode && <p><span className="font-semibold">Course Code:</span> {data.courseCode}</p>}
         </div>
       )}
       
       {/* Submitted To */}
-      <div className="mb-10 space-y-1">
+      <div className="mb-6 space-y-1 text-center">
         <h3 className="text-lg font-semibold inline-block border-b-2 border-black pb-1 mb-2">Submitted To,</h3>
         {data.teacherName && <p className="text-lg">{data.teacherName}</p>}
-        {data.teacherDesignation && <p className="text-base text-gray-800">{data.teacherDesignation}</p>}
-        {data.teacherDepartment && <p className="text-base text-gray-800">{data.teacherDepartment}</p>}
-        {data.universityAcronym && <p className="text-base text-gray-800">{data.universityAcronym}</p>}
+        {data.teacherDesignation && <p className="text-base">{data.teacherDesignation}</p>}
+        {data.teacherDepartment && <p className="text-base">{data.teacherDepartment}</p>}
+        {data.universityAcronym && <p className="text-base">{data.universityAcronym}</p>}
       </div>
 
       {/* Submitted By */}
-      <div className="space-y-1">
+      <div className="mb-6 space-y-1 text-center">
         <h3 className="text-lg font-semibold inline-block border-b-2 border-black pb-1 mb-2">Submitted by,</h3>
         {data.studentName && <p className="text-lg">{data.studentName}</p>}
-        {data.studentId && <p className="text-base text-gray-800">Id-{data.studentId}</p>}
+        {data.studentId && <p className="text-base">Id-{data.studentId}</p>}
         {(data.studentBatch || data.studentSemester) && (
-          <p className="text-base text-gray-800">
+          <p className="text-base">
             {data.studentBatch && `Batch-${data.studentBatch}`}
             {data.studentBatch && data.studentSemester && " "}
             {data.studentSemester && `(${data.studentSemester})`}
           </p>
         )}
-        {data.studentDepartment && <p className="text-base text-gray-800">Dept. Of {data.studentDepartment}</p>}
-        {data.universityAcronym && <p className="text-base text-gray-800">{data.universityAcronym}</p>}
+        {data.studentDepartment && <p className="text-base">Dept. Of {data.studentDepartment}</p>}
+        {data.universityAcronym && <p className="text-base">{data.universityAcronym}</p>}
       </div>
       
       {/* Submission Date - Pushed to bottom */}
-      <div className="mt-auto pt-12 text-left">
+      <div className="mt-auto pt-8 text-left">
         <p className="text-base">Submission Date: {formattedSubmissionDate}</p>
       </div>
 
@@ -117,14 +117,15 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
             height: auto;
             min-height: 0; 
             aspect-ratio: 210 / 297;
-            padding: 5% !important;
+            padding: 5% !important; /* Keep responsive padding */
+            border-width: 1px !important; /* Thinner border for mobile preview */
           }
-           .a4-preview h1 { font-size: 1.5rem; } 
-           .a4-preview h2 { font-size: 1.25rem; } 
-           .a4-preview h3 { font-size: 1.125rem; } 
-           .a4-preview p { font-size: 0.875rem; } 
-           .a4-preview .text-base { font-size: 0.875rem; }
-           .a4-preview .text-lg { font-size: 1rem; } 
+           .a4-preview h1 { font-size: 1.3rem; } /* Adjusted sizes for mobile */
+           .a4-preview h2 { font-size: 1.1rem; } 
+           .a4-preview h3 { font-size: 1rem; } 
+           .a4-preview p { font-size: 0.8rem; } 
+           .a4-preview .text-base { font-size: 0.8rem; }
+           .a4-preview .text-lg { font-size: 0.9rem; } 
         }
         #coverPageA4, #coverPageA4 * {
           color: #000000 !important; 
