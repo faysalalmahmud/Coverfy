@@ -30,7 +30,7 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
         boxSizing: 'border-box',
         fontFamily: "'Times New Roman', Times, serif",
         border: '3px solid black', 
-        padding: '10mm',
+        padding: '10mm', // 10mm internal padding acting as page margins
       }}
     >
       {/* University Header */}
@@ -47,8 +47,8 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
                   e.currentTarget.onerror = null; 
                 }}
             />
-            <div className="w-0.5 h-16 bg-black mx-3"></div> {/* Vertical Line */}
-            {data.universityName && <h1 className="text-2xl font-bold">{data.universityName}{data.universityAcronym ? ` (${data.universityAcronym})` : ''}</h1>}
+            <div className="w-[3px] h-16 bg-black mx-3"></div> {/* Thicker Vertical Line */}
+            {data.universityName && <h1 className="text-2xl font-bold text-left">{data.universityName}{data.universityAcronym ? ` (${data.universityAcronym})` : ''}</h1>}
         </div>
         {data.mainDepartmentName && <h2 className="text-2xl font-semibold mt-1">{data.mainDepartmentName}</h2>}
       </div>
@@ -94,7 +94,7 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
       </div>
       
       {/* Submission Date - Pushed to bottom */}
-      <div className="mt-auto pt-6 text-left"> {/* Changed pt-8 to pt-6 */}
+      <div className="mt-auto pt-6 text-left"> 
         <p className="text-sm">Submission Date: {formattedSubmissionDate}</p>
       </div>
 
@@ -107,7 +107,6 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
           .a4-preview {
             border: 3px solid black !important; 
             box-shadow: none !important;
-            /* Keep width, height, padding, and box-sizing as defined by the main #coverPageA4 style for html2pdf.js */
           }
         }
         @media (max-width: 850px) { 
