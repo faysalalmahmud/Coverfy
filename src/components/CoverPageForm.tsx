@@ -1,7 +1,8 @@
+
 "use client";
 
 import React, { useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import type { CoverPageData } from '@/types/cover-page';
@@ -69,12 +70,15 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
     defaultValues: initialData,
   });
 
-  const watchedValues = form.watch();
-
   useEffect(() => {
-    onDataChange(watchedValues);
-  }, [watchedValues, onDataChange]);
-  
+    const subscription = form.watch((values) => {
+      // Ensure that all fields are included as CoverPageData expects,
+      // type assertion is used assuming `form.watch` without specific field names returns all values.
+      onDataChange(values as CoverPageData);
+    });
+    return () => subscription.unsubscribe();
+  }, [form, onDataChange]); // form.watch is stable if `form` is stable, `onDataChange` is stable.
+
   // No actual submit button needed as it updates live
   // const onSubmit = (data: CoverPageData) => {
   //   onDataChange(data);
@@ -95,7 +99,10 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Report Type</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value || undefined}>
+                  <Select 
+                    onValueChange={field.onChange} 
+                    value={field.value || undefined} // Use undefined for empty string to show placeholder
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select report type" />
