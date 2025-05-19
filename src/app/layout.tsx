@@ -6,7 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 // Removed geistSans and geistMono constants
 
 export const metadata: Metadata = {
-  title: 'CoverPage Pro - Academic Cover Page Generator',
+  title: 'SohojCover - Academic Cover Page Generator',
   description: 'Easily create and download professional A4 cover pages for your assignments and lab reports.',
 };
 

@@ -290,7 +290,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                 <FormItem>
                   <FormLabel className="flex items-center"><User className="mr-2 h-4 w-4 text-muted-foreground" />Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., Dr. Jane Doe" {...field} />
+                    <Input placeholder="e.g., Fazle Rabby" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -303,7 +303,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                 <FormItem>
                   <FormLabel className="flex items-center"><Briefcase className="mr-2 h-4 w-4 text-muted-foreground" />Designation</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., Professor" {...field} />
+                    <Input placeholder="e.g., Asst. Professor" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -316,7 +316,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                 <FormItem>
                   <FormLabel className="flex items-center"><Building2 className="mr-2 h-4 w-4 text-muted-foreground" />Department</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., Computer Science" {...field} />
+                    <Input placeholder="e.g., Computer Science & Engineering" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -338,7 +338,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                 <FormItem>
                   <FormLabel className="flex items-center"><UserCircle2 className="mr-2 h-4 w-4 text-muted-foreground" />Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., John Smith" {...field} />
+                    <Input placeholder="e.g., Faysal Al Mahmud" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -351,7 +351,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                 <FormItem>
                   <FormLabel className="flex items-center"><Badge className="mr-2 h-4 w-4 text-muted-foreground" />ID</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., S12345" {...field} />
+                    <Input placeholder="e.g., 07422100012345" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -364,7 +364,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                 <FormItem>
                   <FormLabel className="flex items-center"><GraduationCap className="mr-2 h-4 w-4 text-muted-foreground" />Department</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., Software Engineering" {...field} />
+                    <Input placeholder="e.g., Computer Science & Engineering" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -377,7 +377,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                 <FormItem>
                   <FormLabel className="flex items-center"><Users2 className="mr-2 h-4 w-4 text-muted-foreground" />Batch</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., 2021" {...field} />
+                    <Input placeholder="e.g., 9th" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

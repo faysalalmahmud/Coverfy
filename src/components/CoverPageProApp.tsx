@@ -54,7 +54,7 @@ export default function CoverPageProApp() {
     <div className="min-h-screen flex flex-col">
       <header className="py-6 bg-primary/10 shadow-sm">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold text-primary">CoverPage Pro</h1>
+          <h1 className="text-4xl font-bold text-primary">SohojCover</h1>
           <p className="text-muted-foreground mt-1">
             Generate professional academic cover pages with ease.
           </p>
@@ -82,8 +82,10 @@ export default function CoverPageProApp() {
         </div>
       </main>
 
-      <footer className="py-6 text-center text-muted-foreground text-sm border-t">
-        <p>&copy; {new Date().getFullYear()} CoverPage Pro. All rights reserved.</p>
+      <footer className="py-6 text-center text-muted-foreground text-sm border-t space-y-1">
+        <p>Developed with ❤️ by Faysal Al Mahmud.</p>
+        <p>&copy; {new Date().getFullYear()} SohojCover. All rights reserved.</p>
+        <p>All credit goes to Team Musketeer and Gemini.</p>
       </footer>
     </div>
   );
