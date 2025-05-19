@@ -1,7 +1,13 @@
+
 import type {NextConfig} from 'next';
 
-// IMPORTANT: Replace 'your-repo-name' with the actual name of your GitHub repository.
-const repoName = process.env.GITHUB_REPOSITORY ? process.env.GITHUB_REPOSITORY.split('/')[1] : 'your-repo-name';
+// The GITHUB_REPOSITORY environment variable is automatically set by GitHub Actions.
+// It will be in the format 'username/repository-name'. We extract the repository name from it.
+// For local development or other environments where GITHUB_REPOSITORY is not set,
+// it falls back to 'SohojCover'.
+const repoName = process.env.GITHUB_REPOSITORY
+  ? process.env.GITHUB_REPOSITORY.split('/')[1]
+  : 'SohojCover';
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -32,6 +38,12 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'school360.xyz',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'drive.google.com',
         port: '',
         pathname: '/**',
       }

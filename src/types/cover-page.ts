@@ -1,6 +1,6 @@
 
 export interface CoverPageData {
-  reportType: 'Assignment' | 'Lab Report' | undefined; // Changed from '' to undefined
+  reportType: 'Assignment' | 'Lab Report' | undefined;
   courseTitle: string;
   courseCode: string;
   teacherName: string;
@@ -19,7 +19,7 @@ export interface CoverPageData {
 }
 
 export const initialCoverPageData: CoverPageData = {
-  reportType: undefined, // Changed from ''
+  reportType: undefined,
   courseTitle: '',
   courseCode: '',
   teacherName: '',
@@ -33,6 +33,6 @@ export const initialCoverPageData: CoverPageData = {
   universityName: 'SHEIKH FAZILATUNNESA MUJIB UNIVERSITY',
   universityAcronym: 'SFMU',
   mainDepartmentName: 'Dept. Of Computer Science & Engineering',
-  universityLogoUrl: 'https://school360.xyz/200837/200837_media/logos/contact_1711082709_2024-03-22.png',
-  submissionDate: null, // Changed from new Date()
+  universityLogoUrl: 'https://drive.google.com/uc?export=download&id=1Rdjp5m6fjqhWD0bvQHotEUrSMemoXeyw',
+  submissionDate: null,
 };
