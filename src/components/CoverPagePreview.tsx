@@ -4,7 +4,8 @@
 import React, { forwardRef } from 'react';
 import type { CoverPageData } from '@/types/cover-page';
 import { format } from 'date-fns';
-import Image from 'next/image';
+// Using standard img tag for better compatibility with html2pdf.js
+// import Image from 'next/image'; 
 
 interface CoverPagePreviewProps {
   data: CoverPageData;
@@ -16,7 +17,8 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
     ? format(new Date(data.submissionDate), 'dd MMMM yyyy') 
     : 'N/A';
 
-  const logoSrc = data.universityLogoUrl || "https://placehold.co/100x100.png?text=Logo";
+  // Use a placeholder if universityLogoUrl is empty or undefined
+  const logoSrc = data.universityLogoUrl || "https://placehold.co/70x70.png?text=Logo";
 
   return (
     <div 
@@ -35,19 +37,22 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
     >
       {/* University Header */}
       <div className="text-center mb-6">
-        <div className="flex flex-col items-center justify-center gap-1 mb-2"> {/* Changed to flex-col and adjusted gap/margin */}
-            <Image 
+        <div className="flex flex-col items-center justify-center gap-1 mb-2">
+            {/* Using standard img tag */}
+            <img 
+                id="universityLogoImage" // ID for potential direct manipulation if needed
                 src={logoSrc} 
                 alt="University Logo" 
                 width={70} 
                 height={70} 
                 className="object-contain"
+                // crossOrigin="anonymous" // Not needed for local images
                 onError={(e) => {
-                  e.currentTarget.src = "https://placehold.co/70x70.png?text=Error";
-                  e.currentTarget.onerror = null; 
+                  const target = e.target as HTMLImageElement;
+                  target.src = "https://placehold.co/70x70.png?text=Error";
+                  target.onerror = null; 
                 }}
             />
-            {/* Removed vertical line div */}
             {data.universityName && <h1 className="text-2xl font-bold text-center">{data.universityName}{data.universityAcronym ? ` (${data.universityAcronym})` : ''}</h1>}
         </div>
         {data.mainDepartmentName && <h2 className="text-2xl font-semibold mt-1">{data.mainDepartmentName}</h2>}

@@ -29,9 +29,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      // school360.xyz and drive.google.com can be removed if only used for the logo,
+      // as local images don't need to be listed here.
+      // Keeping them in case they are used for other images elsewhere.
       {
         protocol: 'https',
-        hostname: 'sfmu.edu.bd',
+        hostname: 'sfmu.edu.bd', // Can be removed if no other images from sfmu.edu.bd are used
         port: '',
         pathname: '/**',
       },

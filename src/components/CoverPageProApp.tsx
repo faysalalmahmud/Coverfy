@@ -26,78 +26,20 @@ export default function CoverPageProApp() {
       return;
     }
 
-    const logoImgElement = element.querySelector<HTMLImageElement>('#universityLogoImage');
-    let originalSrc = '';
-    let originalOnload: ((this: GlobalEventHandlers, ev: Event) => any) | null = null;
-    let originalOnerror: OnErrorEventHandler = null;
-
-    if (logoImgElement) {
-      originalSrc = logoImgElement.src;
-      originalOnload = logoImgElement.onload;
-      originalOnerror = logoImgElement.onerror;
-
-      try {
-        let newSrcToLoad: string | null = null;
-
-        if (formData.universityLogoUrl && formData.universityLogoUrl.startsWith('http')) {
-          const response = await fetch(formData.universityLogoUrl);
-          if (!response.ok) {
-            throw new Error(`Failed to fetch logo: ${response.statusText} (status: ${response.status})`);
-          }
-          const blob = await response.blob();
-          newSrcToLoad = await new Promise<string>((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result as string);
-            reader.onerror = reject;
-            reader.readAsDataURL(blob);
-          });
-        } else if (formData.universityLogoUrl && formData.universityLogoUrl.startsWith('data:')) {
-          newSrcToLoad = formData.universityLogoUrl;
-        }
-
-        if (newSrcToLoad && logoImgElement.src !== newSrcToLoad) {
-          await new Promise<void>((resolve, reject) => {
-            logoImgElement.onload = () => {
-              resolve();
-            };
-            logoImgElement.onerror = (e) => {
-              console.error('Error event on img after setting Data URI src:', e);
-              reject(new Error('Failed to load processed image onto image element.'));
-            };
-            logoImgElement.src = newSrcToLoad;
-            // Check if src was set correctly, for some browsers if it's too long it might silently fail
-            if (logoImgElement.src !== newSrcToLoad) {
-                console.error('Failed to set img src to Data URI, browser might have rejected it.');
-                reject(new Error('Browser failed to accept the Data URI as image source.'));
-                return;
-            }
-          });
-        }
-        // Removed the explicit setTimeout delay from here. 
-        // The promise for logoImgElement.onload should be sufficient.
-
-      } catch (imgError: any) {
-        console.error("Error processing university logo for PDF:", imgError);
-        toast({
-          variant: "destructive",
-          title: "Logo Processing Error",
-          description: imgError.message || "Could not process the university logo. It may be missing from the download.",
-        });
-        // Allow PDF generation to proceed without the logo if processing failed
-      }
-    }
+    // With a local image, the complex Data URI conversion is no longer needed.
+    // html2pdf.js should handle local images more reliably.
 
     try {
       const html2pdf = (await import('html2pdf.js')).default;
       const opt = {
         margin: 10,
         filename: `${formData.courseCode || 'course'}_${formData.reportType || 'report'}_cover.pdf`,
-        image: { type: 'png' },
+        image: { type: 'png' }, // Keep as png for better quality of text and lines
         html2canvas: {
-          scale: 3,
-          useCORS: true,
+          scale: 3, // Keep scale for better quality
+          useCORS: true, // Still good to have for any other potential external resources
           logging: false,
-          imageTimeout: 0, // Disable html2canvas internal image timeout
+          imageTimeout: 0, 
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
@@ -114,15 +56,6 @@ export default function CoverPageProApp() {
         title: "Download Failed",
         description: "There was an error generating your PDF. Please try again.",
       });
-    } finally {
-      // Restore original image properties
-      if (logoImgElement) {
-        if (logoImgElement.src !== originalSrc) {
-          logoImgElement.src = originalSrc;
-        }
-        logoImgElement.onload = originalOnload;
-        logoImgElement.onerror = originalOnerror;
-      }
     }
   };
 
