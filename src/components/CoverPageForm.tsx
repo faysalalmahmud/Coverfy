@@ -54,7 +54,7 @@ import {
   Building,
   Fingerprint,
   AlignVerticalSpaceAround,
-  Image as ImageIcon // Added ImageIcon for logo URL
+  Image as ImageIcon
 } from 'lucide-react';
 
 const formSchema = z.object({
@@ -88,11 +88,18 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
   });
 
   useEffect(() => {
-    const subscription = form.watch((values, { name, type }) => {
+    const subscription = form.watch((values) => {
+      // Ensure all values are present, especially the date which might be initially null/undefined from form state
       const completeValues = {
-        ...initialData,
-        ...values,
+        ...initialData, // Start with initialData to ensure fixed fields are included
+        ...values, // Override with watched values from the form
+        // Ensure date is correctly handled if it comes as a string or needs parsing
         submissionDate: values.submissionDate instanceof Date ? values.submissionDate : (initialData.submissionDate || new Date()),
+        // Explicitly keep fixed values from initialData if they are part of the form state but shouldn't change
+        universityName: initialData.universityName,
+        universityAcronym: initialData.universityAcronym,
+        universityLogoUrl: initialData.universityLogoUrl,
+
       };
       onDataChange(completeValues as CoverPageData);
     });
@@ -116,7 +123,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                 <FormItem>
                   <FormLabel className="flex items-center"><Building className="mr-2 h-4 w-4 text-muted-foreground" />University Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., Global State University" {...field} />
+                    <Input placeholder="e.g., Global State University" {...field} disabled />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -129,7 +136,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                 <FormItem>
                   <FormLabel className="flex items-center"><Fingerprint className="mr-2 h-4 w-4 text-muted-foreground" />University Acronym</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., GSU" {...field} />
+                    <Input placeholder="e.g., GSU" {...field} disabled />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -155,7 +162,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                 <FormItem>
                   <FormLabel className="flex items-center"><ImageIcon className="mr-2 h-4 w-4 text-muted-foreground" />University Logo URL</FormLabel>
                   <FormControl>
-                    <Input placeholder="https://example.com/logo.png" {...field} value={field.value || ''} />
+                    <Input placeholder="https://example.com/logo.png" {...field} value={field.value || ''} disabled />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -178,7 +185,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                   <FormLabel>Report Type</FormLabel>
                   <Select 
                     onValueChange={field.onChange} 
-                    value={field.value || undefined} // Ensure value is undefined if empty for placeholder
+                    value={field.value || undefined} 
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -222,11 +229,8 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                     <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
                         mode="single"
-                        selected={field.value || undefined} // Pass undefined if null for react-day-picker
+                        selected={field.value || undefined} 
                         onSelect={field.onChange}
-                        // disabled={(date) => // Re-enable if specific date restrictions are needed
-                        //   date > new Date() || date < new Date("1900-01-01")
-                        // }
                         initialFocus
                       />
                     </PopoverContent>
@@ -400,3 +404,4 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
 };
 
 export default CoverPageForm;
+
