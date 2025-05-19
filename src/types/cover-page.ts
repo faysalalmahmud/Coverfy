@@ -34,5 +34,5 @@ export const initialCoverPageData: CoverPageData = {
   universityAcronym: 'SFMU',
   mainDepartmentName: 'Dept. Of Computer Science & Engineering',
   universityLogoUrl: '/images/university-logo.png', // Path to local logo
-  submissionDate: null,
+  submissionDate: null, // Initialized client-side
 };
