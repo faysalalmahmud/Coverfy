@@ -30,7 +30,7 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
         boxSizing: 'border-box',
         fontFamily: "'Times New Roman', Times, serif",
         border: '3px solid black', 
-        padding: '10mm',  // Reduced padding
+        padding: '10mm',
       }}
     >
       {/* University Header */}
@@ -47,6 +47,7 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
                   e.currentTarget.onerror = null; 
                 }}
             />
+            <div className="w-0.5 h-16 bg-black mx-3"></div> {/* Vertical Line */}
             {data.universityName && <h1 className="text-2xl font-bold">{data.universityName}{data.universityAcronym ? ` (${data.universityAcronym})` : ''}</h1>}
         </div>
         {data.mainDepartmentName && <h2 className="text-2xl font-semibold mt-1">{data.mainDepartmentName}</h2>}
@@ -104,13 +105,9 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
             print-color-adjust: exact;
           }
           .a4-preview {
-            border: 3px solid black !important; /* Ensure consistent border thickness for print */
+            border: 3px solid black !important; 
             box-shadow: none !important;
-            padding: 10mm !important; /* Consistent with the main style */
-            width: 190mm !important; /* Consistent with the main style */
-            height: 277mm !important; /* Consistent with the main style */
-            min-height: 277mm !important; /* Consistent with the main style */
-            box-sizing: border-box !important;
+            /* Keep width, height, padding, and box-sizing as defined by the main #coverPageA4 style for html2pdf.js */
           }
         }
         @media (max-width: 850px) { 
@@ -118,16 +115,16 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
             width: 100%; 
             height: auto; 
             min-height: 0; 
-            aspect-ratio: 190 / 277; /* Based on new dimensions */
+            aspect-ratio: 190 / 277; 
             padding: 5% !important; 
             border-width: 2px !important; 
           }
            .a4-preview h1 { font-size: 1.2rem; } 
-           .a4-preview h2 { font-size: 1.0rem; } /* Adjusted for main dept name */
+           .a4-preview h2 { font-size: 1.0rem; } 
            .a4-preview h3 { font-size: 0.9rem; } 
            .a4-preview p { font-size: 0.75rem; } 
            .a4-preview .text-sm { font-size: 0.7rem; }
-           .a4-preview .text-xs { font-size: 0.65rem; } /* Adjusted for smaller screens */
+           .a4-preview .text-xs { font-size: 0.65rem; } 
            .a4-preview .text-base { font-size: 0.8rem; } 
         }
         #coverPageA4, #coverPageA4 * {
