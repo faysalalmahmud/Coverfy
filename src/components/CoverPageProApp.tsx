@@ -21,7 +21,7 @@ export default function CoverPageProApp() {
       try {
         const html2pdf = (await import('html2pdf.js')).default;
         const opt = {
-          margin: [0, 0, 0, 0], // Set all margins to 0
+          margin: 10, // 10mm margin on all sides of the PDF page
           filename: `${formData.courseCode || 'course'}_${formData.reportType || 'report'}_cover.pdf`,
           image: { type: 'jpeg', quality: 0.98 },
           html2canvas: { scale: 3, useCORS: true, logging: false },
@@ -88,4 +88,3 @@ export default function CoverPageProApp() {
     </div>
   );
 }
-
