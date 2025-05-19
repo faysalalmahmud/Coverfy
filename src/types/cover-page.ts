@@ -33,6 +33,7 @@ export const initialCoverPageData: CoverPageData = {
   universityName: 'SHEIKH FAZILATUNNESA MUJIB UNIVERSITY',
   universityAcronym: 'SFMU',
   mainDepartmentName: 'Dept. Of Computer Science & Engineering',
-  universityLogoUrl: 'https://sfmu.edu.bd/wp-content/uploads/2023/10/logo.png', // Updated logo URL
+  universityLogoUrl: 'https://school360.xyz/200837/200837_media/logos/contact_1711082709_2024-03-22.png', // Updated logo URL
   submissionDate: new Date(),
 };
+
