@@ -83,7 +83,7 @@ export default function CoverPageProApp() {
       </main>
 
       <footer className="py-6 text-center text-muted-foreground text-sm border-t space-y-1">
-        <p>Developed with ❤️ by Faysal Al Mahmud.</p>
+        <p>Developed with ❤️ by Faysal Al Mahmud, CSE09, SFMU.</p>
         <p>&copy; {new Date().getFullYear()} SohojCover. All rights reserved.</p>
         <p>All credit goes to Team Musketeer and Gemini.</p>
       </footer>
