@@ -30,12 +30,12 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
         boxSizing: 'border-box',
         fontFamily: "'Times New Roman', Times, serif",
         border: '3px solid black', 
-        padding: '10mm', // 10mm internal padding acting as page margins
+        padding: '10mm', 
       }}
     >
       {/* University Header */}
       <div className="text-center mb-6">
-        <div className="flex items-center justify-center gap-3 mb-1">
+        <div className="flex items-center justify-center gap-2 mb-1"> {/* Reduced gap */}
             <Image 
                 src={logoSrc} 
                 alt="University Logo" 
@@ -47,7 +47,7 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
                   e.currentTarget.onerror = null; 
                 }}
             />
-            <div className="w-[3px] h-16 bg-black mx-3"></div> {/* Thicker Vertical Line */}
+            <div className="w-[3px] h-16 bg-black"></div> {/* Removed mx-3 */}
             {data.universityName && <h1 className="text-2xl font-bold text-left">{data.universityName}{data.universityAcronym ? ` (${data.universityAcronym})` : ''}</h1>}
         </div>
         {data.mainDepartmentName && <h2 className="text-2xl font-semibold mt-1">{data.mainDepartmentName}</h2>}
@@ -105,19 +105,21 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
             print-color-adjust: exact;
           }
           .a4-preview {
-            border: 3px solid black !important; 
+            border: 3px solid black !important; /* Ensure border prints */
             box-shadow: none !important;
+            /* Avoid overriding dimensions set for html2pdf unless specifically needed for direct print */
           }
         }
-        @media (max-width: 850px) { 
+        @media (max-width: 850px) { /* Responsive adjustments for smaller screens */
           .a4-preview {
             width: 100%; 
             height: auto; 
             min-height: 0; 
-            aspect-ratio: 190 / 277; 
-            padding: 5% !important; 
-            border-width: 2px !important; 
+            aspect-ratio: 190 / 277; /* Maintain A4-like aspect ratio */
+            padding: 5% !important; /* Adjust padding for smaller view */
+            border-width: 2px !important; /* Thinner border for smaller view */
           }
+           /* Adjust font sizes for smaller preview */
            .a4-preview h1 { font-size: 1.2rem; } 
            .a4-preview h2 { font-size: 1.0rem; } 
            .a4-preview h3 { font-size: 0.9rem; } 
@@ -126,6 +128,7 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
            .a4-preview .text-xs { font-size: 0.65rem; } 
            .a4-preview .text-base { font-size: 0.8rem; } 
         }
+        /* Ensure Times New Roman and black text for PDF generation */
         #coverPageA4, #coverPageA4 * {
           color: #000000 !important; 
           font-family: 'Times New Roman', Times, serif !important;
