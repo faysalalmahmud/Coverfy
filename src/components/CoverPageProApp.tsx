@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useRef } from 'react';
@@ -20,10 +21,10 @@ export default function CoverPageProApp() {
       try {
         const html2pdf = (await import('html2pdf.js')).default;
         const opt = {
-          margin: [10, 5, 10, 5], // top, left, bottom, right in mm
+          margin: [0, 0, 0, 0], // Set all margins to 0
           filename: `${formData.courseCode || 'course'}_${formData.reportType || 'report'}_cover.pdf`,
           image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 3, useCORS: true, logging: false }, // Increased scale for better quality
+          html2canvas: { scale: 3, useCORS: true, logging: false },
           jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
           pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
         };
@@ -87,3 +88,4 @@ export default function CoverPageProApp() {
     </div>
   );
 }
+
