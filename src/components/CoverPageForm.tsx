@@ -8,7 +8,7 @@ import * as z from 'zod';
 import type { CoverPageData } from '@/types/cover-page';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label'; // Keep if used elsewhere, otherwise remove if FormLabel is sufficient
+// import { Label } from '@/components/ui/label'; // Not used directly, FormLabel is sufficient
 import {
   Select,
   SelectContent,
@@ -84,24 +84,31 @@ interface CoverPageFormProps {
 const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData }) => {
   const form = useForm<CoverPageData>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData,
+    defaultValues: initialData, // initialData now has submissionDate: null and reportType: undefined
   });
 
+  // Client-side effect to initialize submissionDate to new Date() if it's null
   useEffect(() => {
-    const subscription = form.watch((values) => {
-      // Ensure all values are present, especially the date which might be initially null/undefined from form state
-      const completeValues = {
-        ...initialData, // Start with initialData to ensure fixed fields are included
-        ...values, // Override with watched values from the form
-        // Ensure date is correctly handled if it comes as a string or needs parsing
-        submissionDate: values.submissionDate instanceof Date ? values.submissionDate : (initialData.submissionDate || new Date()),
-        // Explicitly keep fixed values from initialData if they are part of the form state but shouldn't change
-        universityName: initialData.universityName,
-        universityAcronym: initialData.universityAcronym,
-        universityLogoUrl: initialData.universityLogoUrl,
+    if (form.getValues('submissionDate') === null) {
+      form.setValue('submissionDate', new Date(), { shouldDirty: false, shouldValidate: false });
+    }
+  }, [form]);
 
+  useEffect(() => {
+    const subscription = form.watch((watchedValues) => {
+      // Combine fixed initial data with current form values
+      const dataForParent: CoverPageData = {
+        // Start with initialData for fields that are fixed or have defaults not directly from form
+        ...initialData,
+        // Overlay with all values from the form state
+        ...watchedValues,
+        // Ensure specific types for CoverPageData compatibility if needed
+        reportType: watchedValues.reportType || undefined, // Ensure it's one of the enum values or undefined
+        submissionDate: watchedValues.submissionDate || null, // Ensure it's a Date object or null
+        // Ensure mainDepartmentName is from watchedValues as it's editable
+        mainDepartmentName: watchedValues.mainDepartmentName || initialData.mainDepartmentName,
       };
-      onDataChange(completeValues as CoverPageData);
+      onDataChange(dataForParent);
     });
     return () => subscription.unsubscribe();
   }, [form, onDataChange, initialData]);
@@ -183,9 +190,9 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Report Type</FormLabel>
-                  <Select 
-                    onValueChange={field.onChange} 
-                    value={field.value || undefined} 
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value || undefined} // Handles undefined for placeholder
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -229,7 +236,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                     <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
                         mode="single"
-                        selected={field.value || undefined} 
+                        selected={field.value || undefined}
                         onSelect={field.onChange}
                         initialFocus
                       />
@@ -404,4 +411,3 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
 };
 
 export default CoverPageForm;
-
