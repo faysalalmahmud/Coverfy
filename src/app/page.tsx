@@ -1,3 +1,5 @@
+import CoverPageProApp from '@/components/CoverPageProApp';
+
 export default function Home() {
-  return <></>;
+  return <CoverPageProApp />;
 }
