@@ -67,15 +67,14 @@ export default function CoverPageProApp() {
             logoImgElement.src = newSrcToLoad;
             // Check if src was set correctly, for some browsers if it's too long it might silently fail
             if (logoImgElement.src !== newSrcToLoad) {
-                // This case is rare but can happen if the data URI is malformed or excessively long for browser limits
                 console.error('Failed to set img src to Data URI, browser might have rejected it.');
                 reject(new Error('Browser failed to accept the Data URI as image source.'));
                 return;
             }
           });
         }
-        // A small, final explicit delay after the onload has resolved or if src was already correct.
-        await new Promise(resolve => setTimeout(resolve, 500));
+        // Removed the explicit setTimeout delay from here. 
+        // The promise for logoImgElement.onload should be sufficient.
 
       } catch (imgError: any) {
         console.error("Error processing university logo for PDF:", imgError);
