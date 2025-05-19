@@ -14,7 +14,7 @@ export interface CoverPageData {
   universityName: string;
   universityAcronym: string;
   mainDepartmentName: string;
-  universityLogoUrl?: string; // Optional, for placeholder or future use
+  universityLogoUrl?: string;
   submissionDate: Date | null;
 }
 
@@ -30,9 +30,9 @@ export const initialCoverPageData: CoverPageData = {
   studentDepartment: '',
   studentBatch: '',
   studentSemester: '',
-  universityName: 'SHEIKH FAZILATUNNESA MUJIB UNIVERSITY', // Default example
-  universityAcronym: 'SFMU', // Default example
-  mainDepartmentName: 'Dept. Of Computer Science & Engineering', // Default example
-  universityLogoUrl: '',
-  submissionDate: new Date(), // Default to today
+  universityName: 'SHEIKH FAZILATUNNESA MUJIB UNIVERSITY',
+  universityAcronym: 'SFMU',
+  mainDepartmentName: 'Dept. Of Computer Science & Engineering',
+  universityLogoUrl: 'https://sfmu.edu.bd/wp-content/uploads/2023/10/logo.png', // Updated logo URL
+  submissionDate: new Date(),
 };

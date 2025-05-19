@@ -4,7 +4,7 @@
 import React, { forwardRef } from 'react';
 import type { CoverPageData } from '@/types/cover-page';
 import { format } from 'date-fns';
-import Image from 'next/image'; // Import next/image
+import Image from 'next/image';
 
 interface CoverPagePreviewProps {
   data: CoverPageData;
@@ -16,14 +16,15 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
     ? format(new Date(data.submissionDate), 'dd MMMM yyyy') 
     : 'N/A';
 
-  const logoSrc = data.universityLogoUrl || "https://placehold.co/100x100.png";
+  // Use the provided logo URL or fallback to a generic placeholder if empty or undefined
+  const logoSrc = data.universityLogoUrl || "https://placehold.co/100x100.png?text=Logo";
 
 
   return (
     <div 
       ref={ref} 
       id="coverPageA4"
-      className="a4-preview bg-white text-black p-12 shadow-lg mx-auto border border-gray-300 flex flex-col" // Added flex flex-col
+      className="a4-preview bg-white text-black p-12 shadow-lg mx-auto border border-gray-300 flex flex-col"
       style={{
         width: '210mm', 
         minHeight: '297mm', 
@@ -39,7 +40,12 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
             width={80} 
             height={80} 
             className="mx-auto mb-3 object-contain"
-            data-ai-hint="university logo" 
+            // Removed data-ai-hint as we have a specific logo or a generic placeholder
+            onError={(e) => {
+              // Fallback if the primary logo fails to load
+              e.currentTarget.src = "https://placehold.co/100x100.png?text=Error";
+              e.currentTarget.onerror = null; // Prevent infinite loop if placeholder also fails
+            }}
         />
         {data.universityName && <h1 className="text-2xl font-bold">{data.universityName}{data.universityAcronym ? ` (${data.universityAcronym})` : ''}</h1>}
         {data.mainDepartmentName && <h2 className="text-xl font-semibold mt-1">{data.mainDepartmentName}</h2>}
@@ -100,10 +106,10 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
             border: none !important;
             box-shadow: none !important;
             margin: 0 !important;
-            padding: 0 !important; /* Adjust as needed for print margins */
+            padding: 0 !important; 
             width: 100% !important;
             min-height: 0 !important;
-            height: auto !important; /* Or 100vh for single page */
+            height: auto !important;
           }
         }
         @media (max-width: 850px) { 
@@ -114,12 +120,12 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
             aspect-ratio: 210 / 297;
             padding: 5% !important;
           }
-           .a4-preview h1 { font-size: 1.5rem; } /* Approx 24px */
-           .a4-preview h2 { font-size: 1.25rem; } /* Approx 20px */
-           .a4-preview h3 { font-size: 1.125rem; } /* Approx 18px */
-           .a4-preview p { font-size: 0.875rem; } /* Approx 14px */
+           .a4-preview h1 { font-size: 1.5rem; } 
+           .a4-preview h2 { font-size: 1.25rem; } 
+           .a4-preview h3 { font-size: 1.125rem; } 
+           .a4-preview p { font-size: 0.875rem; } 
            .a4-preview .text-base { font-size: 0.875rem; }
-           .a4-preview .text-lg { font-size: 1rem; } /* Approx 16px */
+           .a4-preview .text-lg { font-size: 1rem; } 
         }
         #coverPageA4, #coverPageA4 * {
           color: #000000 !important; 

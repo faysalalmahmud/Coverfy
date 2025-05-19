@@ -8,7 +8,7 @@ import * as z from 'zod';
 import type { CoverPageData } from '@/types/cover-page';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Label } from '@/components/ui/label'; // Keep if used elsewhere, otherwise remove if FormLabel is sufficient
 import {
   Select,
   SelectContent,
@@ -54,13 +54,14 @@ import {
   Building,
   Fingerprint,
   AlignVerticalSpaceAround,
+  Image as ImageIcon // Added ImageIcon for logo URL
 } from 'lucide-react';
 
 const formSchema = z.object({
   universityName: z.string().min(3, 'University name is required.'),
   universityAcronym: z.string().min(2, 'University acronym is required.'),
   mainDepartmentName: z.string().min(3, 'Main department name is required.'),
-  universityLogoUrl: z.string().optional(),
+  universityLogoUrl: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
   reportType: z.enum(['Assignment', 'Lab Report'], { required_error: 'Report type is required.' }),
   courseTitle: z.string().min(3, 'Course title must be at least 3 characters.'),
   courseCode: z.string().min(3, 'Course code must be at least 3 characters.'),
@@ -87,15 +88,11 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
   });
 
   useEffect(() => {
-    const subscription = form.watch((values) => {
-      // Ensure values are correctly typed as CoverPageData
-      // and that all necessary fields are present.
-      // If a field like submissionDate is undefined during typing,
-      // ensure it's handled or defaulted appropriately before calling onDataChange.
+    const subscription = form.watch((values, { name, type }) => {
       const completeValues = {
-        ...initialData, // provides defaults for any fields not yet in `values`
+        ...initialData,
         ...values,
-        submissionDate: values.submissionDate instanceof Date ? values.submissionDate : initialData.submissionDate,
+        submissionDate: values.submissionDate instanceof Date ? values.submissionDate : (initialData.submissionDate || new Date()),
       };
       onDataChange(completeValues as CoverPageData);
     });
@@ -151,6 +148,19 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="universityLogoUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="flex items-center"><ImageIcon className="mr-2 h-4 w-4 text-muted-foreground" />University Logo URL</FormLabel>
+                  <FormControl>
+                    <Input placeholder="https://example.com/logo.png" {...field} value={field.value || ''} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </CardContent>
         </Card>
 
@@ -168,7 +178,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                   <FormLabel>Report Type</FormLabel>
                   <Select 
                     onValueChange={field.onChange} 
-                    value={field.value || undefined}
+                    value={field.value || undefined} // Ensure value is undefined if empty for placeholder
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -212,11 +222,11 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                     <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
                         mode="single"
-                        selected={field.value || undefined}
+                        selected={field.value || undefined} // Pass undefined if null for react-day-picker
                         onSelect={field.onChange}
-                        disabled={(date) =>
-                          date > new Date() || date < new Date("1900-01-01")
-                        }
+                        // disabled={(date) => // Re-enable if specific date restrictions are needed
+                        //   date > new Date() || date < new Date("1900-01-01")
+                        // }
                         initialFocus
                       />
                     </PopoverContent>
