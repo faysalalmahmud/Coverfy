@@ -29,7 +29,7 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
         width: '210mm', 
         minHeight: '297mm', 
         boxSizing: 'border-box',
-        fontFamily: 'var(--font-geist-sans)', 
+        fontFamily: "'Times New Roman', Times, serif", // Updated font family
       }}
     >
       {/* University Header */}
@@ -40,7 +40,6 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
             width={80} 
             height={80} 
             className="mx-auto mb-3 object-contain"
-            // Removed data-ai-hint as we have a specific logo or a generic placeholder
             onError={(e) => {
               // Fallback if the primary logo fails to load
               e.currentTarget.src = "https://placehold.co/100x100.png?text=Error";
