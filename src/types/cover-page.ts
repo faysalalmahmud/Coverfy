@@ -1,6 +1,6 @@
 
 export interface CoverPageData {
-  reportType: 'Assignment' | 'Lab Report' | undefined;
+  reportType: 'Assignment' | 'Lab Report' | undefined; // Ensure this allows undefined
   courseTitle: string;
   courseCode: string;
   teacherName: string;
@@ -15,11 +15,11 @@ export interface CoverPageData {
   universityAcronym: string;
   mainDepartmentName: string;
   universityLogoUrl?: string;
-  submissionDate: string; // Changed from Date | null | undefined
+  submissionDate: string;
 }
 
 export const initialCoverPageData: CoverPageData = {
-  reportType: undefined,
+  reportType: undefined, // Ensure this is initialized as undefined
   courseTitle: '',
   courseCode: '',
   teacherName: '',
@@ -33,6 +33,6 @@ export const initialCoverPageData: CoverPageData = {
   universityName: 'SHEIKH FAZILATUNNESA MUJIB UNIVERSITY',
   universityAcronym: 'SFMU',
   mainDepartmentName: 'Dept. Of Computer Science & Engineering',
-  universityLogoUrl: '/images/university-logo.png', // Path to local logo
-  submissionDate: '', // Changed from undefined
+  universityLogoUrl: '/images/university-logo.png',
+  submissionDate: '',
 };
