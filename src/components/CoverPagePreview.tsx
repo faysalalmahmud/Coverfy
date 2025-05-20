@@ -3,9 +3,9 @@
 
 import React, { forwardRef } from 'react';
 import type { CoverPageData } from '@/types/cover-page';
-import { format } from 'date-fns';
+// import { format } from 'date-fns'; // No longer needed for submissionDate
 // Using standard img tag for better compatibility with html2pdf.js
-// import Image from 'next/image';
+// import Image from 'next/image'; // Already using <img>
 
 interface CoverPagePreviewProps {
   data: CoverPageData;
@@ -13,12 +13,12 @@ interface CoverPagePreviewProps {
 
 const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ data }, ref) => {
 
-  const formattedSubmissionDate = data.submissionDate
-    ? format(new Date(data.submissionDate), 'dd MMMM yyyy')
-    : 'N/A';
+  // submissionDate is now a string, so no formatting needed. Display directly or "N/A"
+  const displaySubmissionDate = data.submissionDate || 'N/A';
 
   // Use a placeholder if universityLogoUrl is empty or undefined
-  const logoSrc = data.universityLogoUrl || "https://placehold.co/70x70.png?text=Logo";
+  const logoSrc = data.universityLogoUrl || "https://placehold.co/70x70.png";
+
 
   return (
     <div
@@ -26,32 +26,30 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
       id="coverPageA4"
       className="a4-preview bg-white text-black shadow-lg mx-auto flex flex-col"
       style={{
-        width: '190mm',
-        minHeight: '277mm', // A4 height
+        width: '190mm', // A4 width minus 20mm (10mm margin on each side)
+        minHeight: '277mm', // A4 height minus 20mm
         height: '277mm', // Fixed height for PDF generation
         boxSizing: 'border-box',
         fontFamily: "'Times New Roman', Times, serif",
-        fontSize: '11pt', // Base font size for the entire cover page, Tailwind classes will override
+        fontSize: '11pt',
         border: '3px solid black',
-        padding: '10mm', // Internal padding, effectively page margins for content
+        padding: '10mm', // Internal padding, effectively page margins for content within the border
       }}
     >
       {/* University Header */}
       <div className="text-center mb-6">
         <div className="flex flex-col items-center justify-center gap-1 mb-2">
-            {/* Using standard img tag */}
             <img
-                id="universityLogoImage" // ID for potential direct manipulation if needed
+                id="universityLogoImage"
                 src={logoSrc}
                 alt="University Logo"
                 width={70}
                 height={70}
                 className="object-contain"
-                // crossOrigin="anonymous" // Not needed for local images or data URIs
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
-                  target.src = "https://placehold.co/70x70.png?text=Error"; // Fallback for local image errors too
-                  target.onerror = null; // Prevent infinite loop if placeholder also fails
+                  target.src = "https://placehold.co/70x70.png"; 
+                  target.onerror = null; 
                 }}
             />
             {data.universityName && <h1 className="text-2xl font-bold text-center">{data.universityName}{data.universityAcronym ? ` (${data.universityAcronym})` : ''}</h1>}
@@ -84,7 +82,7 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
       </div>
 
       {/* Submitted By */}
-      <div className="mb-4 space-y-0.5 text-center"> {/* Decreased bottom margin */}
+      <div className="mb-4 space-y-0.5 text-center">
         <h3 className="text-lg font-semibold inline-block border-b-2 border-black pb-1 mb-1.5">Submitted by,</h3>
         {data.studentName && <p className="text-lg">{data.studentName}</p>}
         {data.studentId && <p className="text-sm">Id-{data.studentId}</p>}
@@ -101,7 +99,7 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
 
       {/* Submission Date - Pushed to bottom */}
       <div className="mt-auto pt-6 text-left">
-        <p className="text-base">Submission Date: {formattedSubmissionDate}</p>
+        <p className="text-base">Submission Date: {displaySubmissionDate}</p>
       </div>
 
       <style jsx global>{`
@@ -110,35 +108,34 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
           }
+          /* Minimal print styles, rely on #coverPageA4 for primary PDF styling */
           .a4-preview {
-            border: 3px solid black !important; /* Ensure border prints */
-            box-shadow: none !important; /* Remove shadow for print */
+            box-shadow: none !important;
           }
         }
         /* Responsive adjustments for screen preview */
         @media (max-width: 850px) { /* Adjust breakpoint as needed */
           .a4-preview {
-            width: 100%; /* Full width on smaller screens */
-            height: auto; /* Auto height to maintain aspect ratio */
+            width: 100%; 
+            height: auto; 
             min-height: 0;
-            aspect-ratio: 190 / 277; /* Maintain A4-ish aspect ratio */
-            padding: 5% !important; /* Reduce padding for smaller screens */
+            aspect-ratio: 190 / 277; 
+            padding: 5% !important; 
             border-width: 2px !important;
           }
-           /* Responsive font size adjustments for smaller screens */
-           .a4-preview h1 { font-size: 1.2rem; } /* Approx text-xl */
-           .a4-preview h2 { font-size: 1.1rem; } /* Approx text-lg */
-           .a4-preview h3 { font-size: 0.9rem; } /* Slightly smaller than text-base */
-           .a4-preview p { font-size: 0.825rem; } /* Slightly smaller than text-sm */
-           .a4-preview .text-sm { font-size: 0.77rem; } /* Slightly smaller than text-xs, good for details */
-           .a4-preview .text-xs { font-size: 0.715rem; } /* Custom small size */
-           .a4-preview .text-base { font-size: 0.88rem; } /* Approx text-sm */
+           .a4-preview h1 { font-size: 1.2rem; } 
+           .a4-preview h2 { font-size: 1.1rem; } 
+           .a4-preview h3 { font-size: 0.9rem; } 
+           .a4-preview p { font-size: 0.825rem; } 
+           .a4-preview .text-sm { font-size: 0.77rem; } 
+           .a4-preview .text-xs { font-size: 0.715rem; } 
+           .a4-preview .text-base { font-size: 0.88rem; } 
         }
         /* Specific styles for print and general display for PDF generation */
         #coverPageA4, #coverPageA4 * {
-          color: #000000 !important; /* Ensure all text is black */
-          font-family: 'Times New Roman', Times, serif !important; /* Consistent font */
+          color: #000000 !important; 
         }
+        /* #coverPageA4 font-family is set by inline style for priority */
  `}</style>
     </div>
   );

@@ -6,9 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import type { CoverPageData } from '@/types/cover-page';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-// import { Label } from '@/components/ui/label'; // Not used directly, FormLabel is sufficient
 import {
   Select,
   SelectContent,
@@ -31,14 +29,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
 import {
   FileType,
   Book,
@@ -54,7 +44,7 @@ import {
   Building,
   Fingerprint,
   AlignVerticalSpaceAround,
-  Image as ImageIcon
+  Image as ImageIcon // Renamed to avoid conflict with next/image
 } from 'lucide-react';
 
 const formSchema = z.object({
@@ -62,7 +52,7 @@ const formSchema = z.object({
   universityAcronym: z.string().min(2, 'University acronym is required.'),
   mainDepartmentName: z.string().min(3, 'Main department name is required.'),
   universityLogoUrl: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
-  reportType: z.enum(['Assignment', 'Lab Report']).optional(), // Made optional here
+  reportType: z.enum(['Assignment', 'Lab Report']).optional(),
   courseTitle: z.string().min(3, 'Course title must be at least 3 characters.'),
   courseCode: z.string().min(3, 'Course code must be at least 3 characters.'),
   teacherName: z.string().min(3, "Teacher's name must be at least 3 characters."),
@@ -73,10 +63,10 @@ const formSchema = z.object({
   studentDepartment: z.string().min(3, 'Student department is required.'),
   studentBatch: z.string().min(1, 'Batch is required.'),
   studentSemester: z.string().min(1, 'Semester is required.'),
-  submissionDate: z.date({ required_error: "Submission date is required." }),
+  submissionDate: z.string().min(1, "Submission date is required."), // Changed to string
 }).refine(data => data.reportType !== undefined, {
   message: "Report type is required.",
-  path: ["reportType"], // Specify the path of the field this error relates to
+  path: ["reportType"],
 });
 
 interface CoverPageFormProps {
@@ -87,15 +77,8 @@ interface CoverPageFormProps {
 const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData }) => {
   const form = useForm<CoverPageData>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData, // initialData now has submissionDate: null and reportType: undefined
+    defaultValues: initialData,
   });
-
-  // Client-side effect to initialize submissionDate to new Date() if it's null
-  useEffect(() => {
-    if (form.getValues('submissionDate') === null) {
-      form.setValue('submissionDate', new Date(), { shouldDirty: false, shouldValidate: false });
-    }
-  }, [form]);
 
   useEffect(() => {
     const subscription = form.watch((watchedValues) => {
@@ -103,7 +86,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
         ...initialData,
         ...watchedValues,
         reportType: watchedValues.reportType || undefined,
-        submissionDate: watchedValues.submissionDate || null,
+        submissionDate: watchedValues.submissionDate || '', // Ensure string
         mainDepartmentName: watchedValues.mainDepartmentName || initialData.mainDepartmentName,
       };
       onDataChange(dataForParent);
@@ -190,7 +173,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                   <FormLabel>Report Type</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    value={field.value || undefined} // Handles undefined for placeholder
+                    value={field.value || undefined}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -212,34 +195,9 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
               render={({ field }) => (
                 <FormItem className="flex flex-col">
                   <FormLabel className="flex items-center"><CalendarDays className="mr-2 h-4 w-4 text-muted-foreground" />Submission Date</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                          <CalendarDays className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value || undefined}
-                        onSelect={field.onChange}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
+                  <FormControl>
+                    <Input placeholder="e.g., May 20, 2024" {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -409,4 +367,3 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
 };
 
 export default CoverPageForm;
-

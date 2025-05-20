@@ -15,7 +15,7 @@ export interface CoverPageData {
   universityAcronym: string;
   mainDepartmentName: string;
   universityLogoUrl?: string;
-  submissionDate: Date | null;
+  submissionDate: string; // Changed from Date | null | undefined
 }
 
 export const initialCoverPageData: CoverPageData = {
@@ -34,5 +34,5 @@ export const initialCoverPageData: CoverPageData = {
   universityAcronym: 'SFMU',
   mainDepartmentName: 'Dept. Of Computer Science & Engineering',
   universityLogoUrl: '/images/university-logo.png', // Path to local logo
-  submissionDate: null, // Initialized client-side
+  submissionDate: '', // Changed from undefined
 };
