@@ -4,7 +4,7 @@ import type {NextConfig} from 'next';
 // The GITHUB_REPOSITORY environment variable is automatically set by GitHub Actions.
 // It will be in the format 'username/repository-name'. We extract the repository name from it.
 // For local development or other environments where GITHUB_REPOSITORY is not set,
-// it falls back to 'Coverfy'.
+// it falls back to 'Coverfy', which is the name of your repository.
 const repoName = process.env.GITHUB_REPOSITORY
   ? process.env.GITHUB_REPOSITORY.split('/')[1]
   : 'Coverfy';
