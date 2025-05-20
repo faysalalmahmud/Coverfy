@@ -62,7 +62,7 @@ const formSchema = z.object({
   universityAcronym: z.string().min(2, 'University acronym is required.'),
   mainDepartmentName: z.string().min(3, 'Main department name is required.'),
   universityLogoUrl: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
-  reportType: z.enum(['Assignment', 'Lab Report'], { required_error: 'Report type is required.' }),
+  reportType: z.enum(['Assignment', 'Lab Report']).optional(), // Made optional here
   courseTitle: z.string().min(3, 'Course title must be at least 3 characters.'),
   courseCode: z.string().min(3, 'Course code must be at least 3 characters.'),
   teacherName: z.string().min(3, "Teacher's name must be at least 3 characters."),
@@ -74,6 +74,9 @@ const formSchema = z.object({
   studentBatch: z.string().min(1, 'Batch is required.'),
   studentSemester: z.string().min(1, 'Semester is required.'),
   submissionDate: z.date({ required_error: "Submission date is required." }),
+}).refine(data => data.reportType !== undefined, {
+  message: "Report type is required.",
+  path: ["reportType"], // Specify the path of the field this error relates to
 });
 
 interface CoverPageFormProps {
@@ -96,16 +99,11 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
 
   useEffect(() => {
     const subscription = form.watch((watchedValues) => {
-      // Combine fixed initial data with current form values
       const dataForParent: CoverPageData = {
-        // Start with initialData for fields that are fixed or have defaults not directly from form
         ...initialData,
-        // Overlay with all values from the form state
         ...watchedValues,
-        // Ensure specific types for CoverPageData compatibility if needed
-        reportType: watchedValues.reportType || undefined, // Ensure it's one of the enum values or undefined
-        submissionDate: watchedValues.submissionDate || null, // Ensure it's a Date object or null
-        // Ensure mainDepartmentName is from watchedValues as it's editable
+        reportType: watchedValues.reportType || undefined,
+        submissionDate: watchedValues.submissionDate || null,
         mainDepartmentName: watchedValues.mainDepartmentName || initialData.mainDepartmentName,
       };
       onDataChange(dataForParent);
@@ -411,3 +409,4 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
 };
 
 export default CoverPageForm;
+
