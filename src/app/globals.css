@@ -13,8 +13,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
 
-    --primary: 208 98% 73%; /* Soft Blue #77B5FE */
-    --primary-foreground: 208 98% 15%; /* Dark Blue for text on primary */
+    --primary: 210 70% 45%; /* Navy Blue */
+    --primary-foreground: 210 70% 95%; /* Light Blue/White for text on primary */
 
     --secondary: 0 0% 90%; 
     --secondary-foreground: 0 0% 9%;
@@ -30,7 +30,7 @@
 
     --border: 0 0% 80%;
     --input: 0 0% 80%;
-    --ring: 208 98% 65%; /* Based on primary for focus rings */
+    --ring: 210 70% 55%; /* Based on primary for focus rings */
     
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
@@ -58,8 +58,8 @@
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 3.9%;
     --popover-foreground: 0 0% 98%;
-    --primary: 208 98% 73%; /* Soft Blue #77B5FE */
-    --primary-foreground: 208 98% 15%; /* Dark Blue for text on primary */
+    --primary: 210 70% 45%; /* Navy Blue */
+    --primary-foreground: 210 70% 95%; /* Light Blue/White for text on primary */
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 14.9%;
@@ -70,7 +70,7 @@
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
-    --ring: 208 98% 65%; /* Based on primary for focus rings */
+    --ring: 210 70% 55%; /* Based on primary for focus rings */
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
@@ -94,6 +94,6 @@
   }
   body {
     @apply bg-background text-foreground;
-    /* font-family removed to allow Geist from layout.tsx to apply */
+    /* font-family removed to allow Times New Roman from tailwind.config.ts to apply */
   }
 }

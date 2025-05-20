@@ -34,10 +34,10 @@ export default function CoverPageProApp() {
       const opt = {
         margin: 10,
         filename: `${formData.courseCode || 'course'}_${formData.reportType || 'report'}_cover.pdf`,
-        image: { type: 'png' }, // Keep as png for better quality of text and lines
+        image: { type: 'png' },
         html2canvas: {
-          scale: 3, // Keep scale for better quality
-          useCORS: true, // Still good to have for any other potential external resources
+          scale: 3,
+          useCORS: true,
           logging: false,
           imageTimeout: 0, 
         },
@@ -63,7 +63,7 @@ export default function CoverPageProApp() {
     <div className="min-h-screen flex flex-col">
       <header className="py-6 bg-primary/10 shadow-sm">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold text-primary">SohojCover</h1>
+          <h1 className="text-4xl font-bold text-primary">Coverfy</h1>
           <p className="text-muted-foreground mt-1">
             Generate professional academic cover pages with ease.
           </p>
@@ -93,7 +93,7 @@ export default function CoverPageProApp() {
 
       <footer className="py-6 text-center text-muted-foreground text-sm border-t space-y-1">
         <p>Developed with ❤️ by Faysal Al Mahmud, CSE09, SFMU.</p>
-        <p>&copy; {new Date().getFullYear()} SohojCover. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Coverfy. All rights reserved.</p>
         <p>All credit goes to Team Musketeer and Gemini.</p>
       </footer>
     </div>
