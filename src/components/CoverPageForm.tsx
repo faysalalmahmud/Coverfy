@@ -86,7 +86,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
         ...initialCoverPageData,
         ...initialData,
         ...watchedValues,
-        reportType: watchedValues.reportType as CoverPageData['reportType'], // Ensure correct type
+        reportType: watchedValues.reportType as CoverPageData['reportType'], 
         submissionDate: watchedValues.submissionDate || '',
         mainDepartmentName: watchedValues.mainDepartmentName || initialData.mainDepartmentName,
       };
@@ -101,7 +101,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
       <form className="space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center"><Building className="mr-2 h-5 w-5 text-primary" /> University Details</CardTitle>
+            <CardTitle className="flex items-center"><Building className="mr-2 h-5 w-5" style={{ color: '#180c52' }} /> University Details</CardTitle>
             <CardDescription>Enter university information.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -110,7 +110,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
               name="universityName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center"><Building className="mr-2 h-4 w-4 text-muted-foreground" />University Name</FormLabel>
+                  <FormLabel className="flex items-center"><Building className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />University Name</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g., Global State University" {...field} disabled />
                   </FormControl>
@@ -123,7 +123,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
               name="universityAcronym"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center"><Fingerprint className="mr-2 h-4 w-4 text-muted-foreground" />University Acronym</FormLabel>
+                  <FormLabel className="flex items-center"><Fingerprint className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />University Acronym</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g., GSU" {...field} disabled />
                   </FormControl>
@@ -136,7 +136,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
               name="mainDepartmentName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center"><AlignVerticalSpaceAround className="mr-2 h-4 w-4 text-muted-foreground" />Main Department Name</FormLabel>
+                  <FormLabel className="flex items-center"><AlignVerticalSpaceAround className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />Main Department Name</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g., Dept. Of Science & Technology" {...field} />
                   </FormControl>
@@ -149,7 +149,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
               name="universityLogoUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center"><ImageIcon className="mr-2 h-4 w-4 text-muted-foreground" />University Logo URL</FormLabel>
+                  <FormLabel className="flex items-center"><ImageIcon className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />University Logo URL</FormLabel>
                   <FormControl>
                     <Input placeholder="https://example.com/logo.png" {...field} value={field.value || ''} disabled />
                   </FormControl>
@@ -162,7 +162,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center"><FileType className="mr-2 h-5 w-5 text-primary" /> Report Details</CardTitle>
+            <CardTitle className="flex items-center"><FileType className="mr-2 h-5 w-5" style={{ color: '#180c52' }} /> Report Details</CardTitle>
             <CardDescription>Specify the type and date of your report.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -174,7 +174,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                   <FormLabel>Report Type</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    value={field.value} // field.value will be 'Assignment' by default
+                    value={field.value} 
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -195,7 +195,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
               name="submissionDate"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel className="flex items-center"><CalendarDays className="mr-2 h-4 w-4 text-muted-foreground" />Submission Date</FormLabel>
+                  <FormLabel className="flex items-center"><CalendarDays className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />Submission Date</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g., May 20, 2024" {...field} />
                   </FormControl>
@@ -208,7 +208,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center"><Book className="mr-2 h-5 w-5 text-primary" /> Course Details</CardTitle>
+            <CardTitle className="flex items-center"><Book className="mr-2 h-5 w-5" style={{ color: '#180c52' }} /> Course Details</CardTitle>
              <CardDescription>Enter the details of your course.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -217,7 +217,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
               name="courseTitle"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center"><Book className="mr-2 h-4 w-4 text-muted-foreground" />Course Title</FormLabel>
+                  <FormLabel className="flex items-center"><Book className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />Course Title</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g., Introduction to Programming" {...field} />
                   </FormControl>
@@ -230,7 +230,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
               name="courseCode"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center"><Hash className="mr-2 h-4 w-4 text-muted-foreground" />Course Code</FormLabel>
+                  <FormLabel className="flex items-center"><Hash className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />Course Code</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g., CSE101" {...field} />
                   </FormControl>
@@ -243,7 +243,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center"><User className="mr-2 h-5 w-5 text-primary" /> Instructor Details</CardTitle>
+            <CardTitle className="flex items-center"><User className="mr-2 h-5 w-5" style={{ color: '#180c52' }} /> Instructor Details</CardTitle>
             <CardDescription>Provide information about your course instructor.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -252,7 +252,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
               name="teacherName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center"><User className="mr-2 h-4 w-4 text-muted-foreground" />Name</FormLabel>
+                  <FormLabel className="flex items-center"><User className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />Name</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g., Fazle Rabby" {...field} />
                   </FormControl>
@@ -265,7 +265,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
               name="teacherDesignation"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center"><Briefcase className="mr-2 h-4 w-4 text-muted-foreground" />Designation</FormLabel>
+                  <FormLabel className="flex items-center"><Briefcase className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />Designation</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g., Asst. Professor" {...field} />
                   </FormControl>
@@ -278,7 +278,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
               name="teacherDepartment"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center"><Building2 className="mr-2 h-4 w-4 text-muted-foreground" />Department</FormLabel>
+                  <FormLabel className="flex items-center"><Building2 className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />Department</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g., Computer Science & Engineering" {...field} />
                   </FormControl>
@@ -291,7 +291,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center"><UserCircle2 className="mr-2 h-5 w-5 text-primary" /> Student Details</CardTitle>
+            <CardTitle className="flex items-center"><UserCircle2 className="mr-2 h-5 w-5" style={{ color: '#180c52' }} /> Student Details</CardTitle>
             <CardDescription>Fill in your personal academic information.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -300,7 +300,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
               name="studentName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center"><UserCircle2 className="mr-2 h-4 w-4 text-muted-foreground" />Name</FormLabel>
+                  <FormLabel className="flex items-center"><UserCircle2 className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />Name</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g., Faysal Al Mahmud" {...field} />
                   </FormControl>
@@ -313,7 +313,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
               name="studentId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center"><Badge className="mr-2 h-4 w-4 text-muted-foreground" />ID</FormLabel>
+                  <FormLabel className="flex items-center"><Badge className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />ID</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g., 07422100012345" {...field} />
                   </FormControl>
@@ -326,7 +326,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
               name="studentDepartment"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center"><GraduationCap className="mr-2 h-4 w-4 text-muted-foreground" />Department</FormLabel>
+                  <FormLabel className="flex items-center"><GraduationCap className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />Department</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g., Computer Science & Engineering" {...field} />
                   </FormControl>
@@ -339,7 +339,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
               name="studentBatch"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center"><Users2 className="mr-2 h-4 w-4 text-muted-foreground" />Batch</FormLabel>
+                  <FormLabel className="flex items-center"><Users2 className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />Batch</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g., 9th" {...field} />
                   </FormControl>
@@ -352,7 +352,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
               name="studentSemester"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center"><CalendarDays className="mr-2 h-4 w-4 text-muted-foreground" />Semester</FormLabel>
+                  <FormLabel className="flex items-center"><CalendarDays className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />Semester</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g., 5th" {...field} />
                   </FormControl>
