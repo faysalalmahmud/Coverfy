@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import type { CoverPageData } from '@/types/cover-page';
 import { initialCoverPageData } from '@/types/cover-page';
 import CoverPageForm from '@/components/CoverPageForm';
@@ -30,49 +30,57 @@ export default function CoverPageProApp() {
     let originalLogoSrc: string | undefined = undefined;
     let originalLogoOnload: ((this: GlobalEventHandlers, ev: Event) => any) | null = null;
     let originalLogoOnerror: OnErrorEventHandler = null;
-    let newSrcApplied = false; 
+    let newSrcApplied = false;
 
     try {
       if (logoImgElement && formData.universityLogoUrl && formData.universityLogoUrl.startsWith('images/')) {
-        
+        // For local images, html2canvas should generally handle them directly without needing Data URI conversion
+        // if they are correctly referenced and part of the static assets.
+        // However, to be absolutely sure, we can still attempt to load it onto the image element
+        // especially if there are complex CSS transformations or parent opacities affecting it.
+
+        // Check if the image is already loaded and rendered by the browser
         if (!logoImgElement.complete || logoImgElement.naturalHeight === 0) {
+          // Image might not be fully rendered by the browser yet.
+          // Attempt to force load it by re-setting its src or waiting for onload.
           originalLogoSrc = logoImgElement.src;
           originalLogoOnload = logoImgElement.onload;
           originalLogoOnerror = logoImgElement.onerror;
-          newSrcApplied = true; 
+          newSrcApplied = true;
 
           await new Promise<void>((resolve, reject) => {
             const currentOnload = logoImgElement.onload;
             const currentOnerror = logoImgElement.onerror;
 
             logoImgElement.onload = () => {
-              if (currentOnload) currentOnload.call(logoImgElement); 
-              logoImgElement.onload = originalLogoOnload; 
-              logoImgElement.onerror = originalLogoOnerror; 
+              if (currentOnload) currentOnload.call(logoImgElement); // Call original if it existed
+              logoImgElement.onload = originalLogoOnload; // Restore
+              logoImgElement.onerror = originalLogoOnerror; // Restore
               resolve();
             };
             logoImgElement.onerror = (e) => {
-              if (currentOnerror) currentOnerror.call(logoImgElement, e); 
-              logoImgElement.onload = originalLogoOnload; 
-              logoImgElement.onerror = originalLogoOnerror; 
+              if (currentOnerror) currentOnerror.call(logoImgElement, e); // Call original if it existed
+              logoImgElement.onload = originalLogoOnload; // Restore
+              logoImgElement.onerror = originalLogoOnerror; // Restore
               console.error("Error loading local image onto image element for PDF:", e);
               reject(new Error("Error loading local image for PDF."));
             };
-            
+            // If src needs to be reset to trigger load for local images (usually not, but as a fallback)
+            // logoImgElement.src = formData.universityLogoUrl;
           });
         }
       }
 
       const html2pdf = (await import('html2pdf.js')).default;
       const opt = {
-        margin: 10,
+        margin: 10, // 10mm margin on all sides of the PDF page
         filename: `${formData.courseCode || 'course'}_${formData.reportType || 'report'}_cover.pdf`,
-        image: { type: 'png' }, 
+        image: { type: 'png' }, // Use PNG for image processing
         html2canvas: {
-          scale: 3, 
+          scale: 3, // Increased scale for better quality
           useCORS: true,
-          logging: false, 
-          imageTimeout: 0, 
+          logging: false, // Explicitly turn off logging
+          imageTimeout: 0, // Disable html2canvas internal image timeout
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
@@ -93,10 +101,14 @@ export default function CoverPageProApp() {
         description: error instanceof Error ? error.message : "There was an error generating your PDF. Please try again.",
       });
     } finally {
-       if (newSrcApplied && logoImgElement) { 
-        
+       if (newSrcApplied && logoImgElement) {
+        // Restore original handlers if they were changed
         logoImgElement.onload = originalLogoOnload;
         logoImgElement.onerror = originalLogoOnerror;
+        // if originalLogoSrc was captured and src was changed, restore it:
+        // if (originalLogoSrc && logoImgElement.src !== originalLogoSrc) {
+        //   logoImgElement.src = originalLogoSrc;
+        // }
       }
     }
   };
@@ -146,7 +158,8 @@ export default function CoverPageProApp() {
             className="hover:text-[#180c52] hover:underline transition-colors font-semibold"
           >
             Faysal Al Mahmud
-          </a>, CSE09, SFMU.
+          </a>
+          , CSE09, SFMU.
         </p>
         <p>&copy; {new Date().getFullYear()} Coverfy. All rights reserved.</p>
         <p>All credit goes to Team Musketeer, Gemini and SFMU Computer Club.</p>
