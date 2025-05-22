@@ -45,14 +45,13 @@ import {
   Building,
   Fingerprint,
   AlignVerticalSpaceAround,
-  Image as ImageIcon
 } from 'lucide-react';
 
 const formSchema = z.object({
   universityName: z.string().min(3, 'University name is required.'),
   universityAcronym: z.string().min(2, 'University acronym is required.'),
   mainDepartmentName: z.string().min(3, 'Main department name is required.'),
-  universityLogoUrl: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
+  // universityLogoUrl field is removed from schema as it's no longer an input
   reportType: z.enum(['Assignment', 'Lab Report'], {
     required_error: "Report type is required.",
   }),
@@ -82,10 +81,12 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
 
   useEffect(() => {
     const subscription = form.watch((watchedValues) => {
+      // Ensure all fields from CoverPageData are included, especially fixed ones
       const dataForParent: CoverPageData = {
-        ...initialCoverPageData,
-        ...initialData,
-        ...watchedValues,
+        ...initialCoverPageData, // Start with all defaults (includes fixed logo URL)
+        ...initialData,         // Apply any initial overrides
+        ...watchedValues,       // Apply currently watched values from the form
+        // Explicitly cast enum types if necessary, though zodResolver usually handles this
         reportType: watchedValues.reportType as CoverPageData['reportType'], 
         submissionDate: watchedValues.submissionDate || '',
         mainDepartmentName: watchedValues.mainDepartmentName || initialData.mainDepartmentName,
@@ -144,19 +145,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="universityLogoUrl"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="flex items-center"><ImageIcon className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />University Logo URL</FormLabel>
-                  <FormControl>
-                    <Input placeholder="https://example.com/logo.png" {...field} value={field.value || ''} disabled />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {/* University Logo URL field removed from here */}
           </CardContent>
         </Card>
 
