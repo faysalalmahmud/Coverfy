@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import type { CoverPageData } from '@/types/cover-page';
-import { initialCoverPageData } from '@/types/cover-page'; // Import for safety in useEffect
+import { initialCoverPageData } from '@/types/cover-page';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -53,7 +53,9 @@ const formSchema = z.object({
   universityAcronym: z.string().min(2, 'University acronym is required.'),
   mainDepartmentName: z.string().min(3, 'Main department name is required.'),
   universityLogoUrl: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
-  reportType: z.enum(['Assignment', 'Lab Report']).optional(), // reportType can be undefined initially
+  reportType: z.enum(['Assignment', 'Lab Report'], {
+    required_error: "Report type is required.",
+  }),
   courseTitle: z.string().min(3, 'Course title must be at least 3 characters.'),
   courseCode: z.string().min(3, 'Course code must be at least 3 characters.'),
   teacherName: z.string().min(3, "Teacher's name must be at least 3 characters."),
@@ -65,9 +67,6 @@ const formSchema = z.object({
   studentBatch: z.string().min(1, 'Batch is required.'),
   studentSemester: z.string().min(1, 'Semester is required.'),
   submissionDate: z.string().min(1, "Submission date is required."),
-}).refine(data => data.reportType !== undefined, { // Enforce selection for submission
-  message: "Report type is required.",
-  path: ["reportType"],
 });
 
 interface CoverPageFormProps {
@@ -84,11 +83,11 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
   useEffect(() => {
     const subscription = form.watch((watchedValues) => {
       const dataForParent: CoverPageData = {
-        ...initialCoverPageData, // Base with all fields from default structure
-        ...initialData,         // Overlay with props (fixed university details)
-        ...watchedValues,       // Overlay with current form values
-        reportType: watchedValues.reportType || undefined, // Ensure type consistency
-        submissionDate: watchedValues.submissionDate || '', // Ensure type consistency
+        ...initialCoverPageData,
+        ...initialData,
+        ...watchedValues,
+        reportType: watchedValues.reportType as CoverPageData['reportType'], // Ensure correct type
+        submissionDate: watchedValues.submissionDate || '',
         mainDepartmentName: watchedValues.mainDepartmentName || initialData.mainDepartmentName,
       };
       onDataChange(dataForParent);
@@ -175,11 +174,11 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                   <FormLabel>Report Type</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    value={field.value || undefined} // Important: allow undefined for placeholder
+                    value={field.value} // field.value will be 'Assignment' by default
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select report type" />
+                        <SelectValue />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

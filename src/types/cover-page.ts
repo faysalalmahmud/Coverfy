@@ -1,6 +1,6 @@
 
 export interface CoverPageData {
-  reportType: 'Assignment' | 'Lab Report' | undefined; // Allow undefined
+  reportType: 'Assignment' | 'Lab Report';
   courseTitle: string;
   courseCode: string;
   teacherName: string;
@@ -19,7 +19,7 @@ export interface CoverPageData {
 }
 
 export const initialCoverPageData: CoverPageData = {
-  reportType: undefined, // Initialize as undefined
+  reportType: 'Assignment', // Default to Assignment
   courseTitle: '',
   courseCode: '',
   teacherName: '',
