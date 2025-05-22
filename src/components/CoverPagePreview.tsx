@@ -26,7 +26,7 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
         height: '277mm',
         boxSizing: 'border-box',
         fontFamily: "'Times New Roman', Times, serif",
-        fontSize: '12pt', // Base font size for PDF - increased slightly
+        fontSize: '12pt', // Base font size for PDF
         border: '3px solid black',
         padding: '10mm',
       }}
@@ -39,16 +39,15 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
                 src={logoSrc}
                 alt="University Logo"
                 className="object-contain university-logo-img"
-                crossOrigin="anonymous" // Important for html2canvas CORS
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.src = "https://placehold.co/80x80.png";
                   target.onerror = null;
                 }}
             />
-            {data.universityName && <h1 className="text-3xl font-bold text-center">{data.universityName}{data.universityAcronym ? ` (${data.universityAcronym})` : ''}</h1>}
+            {data.universityName && <h1 className="text-2xl font-bold text-center">{data.universityName}{data.universityAcronym ? ` (${data.universityAcronym})` : ''}</h1>}
         </div>
-        {data.mainDepartmentName && <h2 className="text-3xl font-semibold mt-1">{data.mainDepartmentName}</h2>}
+        {data.mainDepartmentName && <h2 className="text-2xl font-semibold mt-1">{data.mainDepartmentName}</h2>}
       </div>
 
       {/* Report Type */}
@@ -122,14 +121,15 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
             border-width: 1px !important; /* Thinner border */
           }
            /* Using rem for font sizes for better control and accessibility */
-           .a4-preview h1 { font-size: 1.3rem !important; } /* Increased */
-           .a4-preview h2 { font-size: 1.2rem !important; } /* Increased */
-           .a4-preview h3 { font-size: 1.0rem !important; } /* Increased */
-           .a4-preview p { font-size: 0.9rem !important; } /* Increased */
-           .a4-preview .text-sm { font-size: 0.85rem !important; } /* Corresponds to base text-base now */
-           .a4-preview .text-xs { font-size: 0.75rem !important; } /* Corresponds to base text-sm now */
-           .a4-preview .text-base { font-size: 0.95rem !important; } /* Corresponds to base text-lg now */
-           .a4-preview .text-lg { font-size: 1.1rem !important; } /* Corresponds to base text-xl now */
+           .a4-preview h1 { font-size: 1.3rem !important; } /* Reverted */
+           .a4-preview h2 { font-size: 1.2rem !important; } /* Reverted */
+           .a4-preview h3 { font-size: 1.1rem !important; } /* Increased */
+           .a4-preview p { font-size: 1.0rem !important; } /* Increased */
+           .a4-preview .text-sm { font-size: 0.9rem !important; } /* text-xs to text-sm -> 0.85rem to 0.9rem */
+           .a4-preview .text-xs { font-size: 0.8rem !important; } /* (was 0.75rem previously, now 0.8rem) */
+           .a4-preview .text-base { font-size: 1.0rem !important; } /* text-sm to text-base -> 0.95rem to 1.0rem*/
+           .a4-preview .text-lg { font-size: 1.1rem !important; } /* text-base to text-lg -> 1.0rem to 1.1rem */
+           .a4-preview .text-xl { font-size: 1.2rem !important; } /* text-lg to text-xl -> 1.1rem to 1.2rem */
            .a4-preview .university-logo-img {
              width: 55px !important;
              height: 55px !important;
@@ -149,3 +149,4 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
 
 CoverPagePreview.displayName = "CoverPagePreview";
 export default CoverPagePreview;
+
