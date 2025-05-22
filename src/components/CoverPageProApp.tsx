@@ -30,41 +30,49 @@ export default function CoverPageProApp() {
     let originalLogoSrc: string | undefined = undefined;
     let originalLogoOnload: ((this: GlobalEventHandlers, ev: Event) => any) | null = null;
     let originalLogoOnerror: OnErrorEventHandler = null;
-    let newSrcApplied = false; // Track if we actually changed the src
+    let newSrcApplied = false;
 
     try {
-      // Only attempt to process the logo if it's a local image (in public/images) and not a Data URI
       if (logoImgElement && formData.universityLogoUrl && formData.universityLogoUrl.startsWith('images/')) {
-        originalLogoSrc = logoImgElement.src;
+        originalLogoSrc = logoImgElement.src; 
         originalLogoOnload = logoImgElement.onload;
         originalLogoOnerror = logoImgElement.onerror;
-        
-        // Ensure the local image is fully loaded before capturing
-        await new Promise<void>((resolve, reject) => {
-          if (logoImgElement.complete && logoImgElement.naturalHeight !== 0) {
-            resolve(); // Image already loaded
-          } else {
-            logoImgElement.onload = () => resolve();
-            logoImgElement.onerror = (e) => {
-              console.error("Error loading local image:", e);
-              reject(new Error("Error loading local image onto image element."));
-            };
-          }
-        });
-        newSrcApplied = true; // Mark that we've effectively waited for it if it wasn't preloaded.
-      }
+        newSrcApplied = true;
 
+        // Ensure the local image is fully loaded before capturing
+        // This might involve temporarily attaching new onload/onerror handlers
+        // if the image isn't already loaded.
+        if (!logoImgElement.complete || logoImgElement.naturalHeight === 0) {
+          await new Promise<void>((resolve, reject) => {
+            const currentOnload = logoImgElement.onload;
+            const currentOnerror = logoImgElement.onerror;
+            logoImgElement.onload = () => {
+              logoImgElement.onload = currentOnload; // Restore
+              logoImgElement.onerror = currentOnerror; // Restore
+              resolve();
+            };
+            logoImgElement.onerror = (e) => {
+              logoImgElement.onload = currentOnload; // Restore
+              logoImgElement.onerror = currentOnerror; // Restore
+              console.error("Error loading local image for PDF:", e);
+              reject(new Error("Error loading local image onto image element for PDF."));
+            };
+            // If src hasn't changed, browser might not re-trigger load,
+            // but for local images this setup should be okay.
+          });
+        }
+      }
 
       const html2pdf = (await import('html2pdf.js')).default;
       const opt = {
-        margin: 10, // 10mm margin on all sides of the PDF page
+        margin: 10, 
         filename: `${formData.courseCode || 'course'}_${formData.reportType || 'report'}_cover.pdf`,
-        image: { type: 'png' }, 
+        image: { type: 'png' },
         html2canvas: {
-          scale: 3, 
-          useCORS: true, 
-          logging: false, 
-          imageTimeout: 0, 
+          scale: 3,
+          useCORS: true,
+          logging: false,
+          imageTimeout: 0,
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
@@ -76,11 +84,7 @@ export default function CoverPageProApp() {
       });
     } catch (error) {
       console.error("Failed to download PDF or process logo:", error);
-      const isLogoError = error instanceof Error && (
-        error.message.startsWith("Failed to fetch logo") || // Kept for broader catching, though less likely now
-        error.message.includes("Data URI") || // Kept for broader catching
-        error.message.includes("local image") 
-      );
+      const isLogoError = error instanceof Error && error.message.includes("local image for PDF");
 
       toast({
         variant: "destructive",
@@ -88,11 +92,12 @@ export default function CoverPageProApp() {
         description: error instanceof Error ? error.message : "There was an error generating your PDF. Please try again.",
       });
     } finally {
-      // Restore original image src and handlers only if they were potentially changed/interacted with
       if (logoImgElement && originalLogoSrc && newSrcApplied) {
-        // If it's a local image, it doesn't need its src 'restored' in the same way
-        // a Data URI-converted one would. We mainly ensure handlers are reset.
-        logoImgElement.src = originalLogoSrc; // Re-assign to be safe, though browser might cache
+        // Restore original properties if they were captured
+        // For local images, src restoration is less critical than handlers
+        if (logoImgElement.src !== originalLogoSrc) { // Only if it was actually changed to a data URI (not current logic)
+             // logoImgElement.src = originalLogoSrc; 
+        }
         logoImgElement.onload = originalLogoOnload;
         logoImgElement.onerror = originalLogoOnerror;
       }
@@ -103,7 +108,7 @@ export default function CoverPageProApp() {
     <div className="min-h-screen flex flex-col">
       <header className="py-6 bg-primary shadow-sm">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold" style={{ color: '#180c52' }}>Coverfy</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold" style={{ color: '#180c52' }}>Coverfy</h1>
           <p className="text-primary-foreground/90 mt-1">
             A  Team Musketeer's Academic cover generator
           </p>
@@ -144,7 +149,7 @@ export default function CoverPageProApp() {
           >
             Faysal Al Mahmud
           </a>
-          , CSE09, SFMU.
+          .
         </p>
         <p>&copy; {new Date().getFullYear()} Coverfy. All rights reserved.</p>
         <p>All credit goes to Team Musketeer, Gemini and SFMU Computer Club.</p>
