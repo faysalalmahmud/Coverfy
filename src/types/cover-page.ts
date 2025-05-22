@@ -33,6 +33,6 @@ export const initialCoverPageData: CoverPageData = {
   universityName: 'SHEIKH FAZILATUNNESA MUJIB UNIVERSITY',
   universityAcronym: 'SFMU',
   mainDepartmentName: 'Dept. Of Computer Science & Engineering',
-  universityLogoUrl: '/images/university-logo.png',
+  universityLogoUrl: 'images/university-logo.png', // Changed to relative path
   submissionDate: '',
 };
