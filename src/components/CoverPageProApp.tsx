@@ -7,7 +7,7 @@ import { initialCoverPageData } from '@/types/cover-page';
 import CoverPageForm from '@/components/CoverPageForm';
 import CoverPagePreview from '@/components/CoverPagePreview';
 import { Button } from '@/components/ui/button';
-import { Download } from 'lucide-react';
+import { Download, Linkedin } from 'lucide-react'; // Added Linkedin
 import { useToast } from "@/hooks/use-toast";
 
 export default function CoverPageProApp() {
@@ -39,7 +39,7 @@ export default function CoverPageProApp() {
           scale: 3,
           useCORS: true,
           logging: false,
-          imageTimeout: 0, 
+          imageTimeout: 0,
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
@@ -61,11 +61,11 @@ export default function CoverPageProApp() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="py-6 bg-primary/10 shadow-sm">
+      <header className="py-6 bg-primary shadow-sm"> {/* Changed background to bg-primary */}
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold text-primary">Coverfy</h1>
-          <p className="text-muted-foreground mt-1">
-            Generate professional academic cover pages with ease.
+          <h1 className="text-4xl font-bold text-primary-foreground">Coverfy</h1> {/* Changed text color */}
+          <p className="text-primary-foreground/90 mt-1"> {/* Changed text color and content */}
+            A Team Musketeer's Academic cover generator
           </p>
         </div>
       </header>
@@ -93,6 +93,16 @@ export default function CoverPageProApp() {
 
       <footer className="py-6 text-center text-muted-foreground text-sm border-t space-y-1">
         <p>Developed with ❤️ by Faysal Al Mahmud, CSE09, SFMU.</p>
+        <p>
+          <a 
+            href="https://www.linkedin.com/in/faysalalmahmud/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="inline-flex items-center hover:text-primary transition-colors"
+          >
+            <Linkedin className="mr-1 h-4 w-4" /> LinkedIn
+          </a>
+        </p>
         <p>&copy; {new Date().getFullYear()} Coverfy. All rights reserved.</p>
         <p>All credit goes to Team Musketeer and Gemini.</p>
       </footer>
