@@ -30,40 +30,35 @@ export default function CoverPageProApp() {
     let originalLogoSrc: string | undefined = undefined;
     let originalLogoOnload: ((this: GlobalEventHandlers, ev: Event) => any) | null = null;
     let originalLogoOnerror: OnErrorEventHandler = null;
-    let newSrcApplied = false; // Tracks if we attempted to change the src
+    let newSrcApplied = false; 
 
     try {
       if (logoImgElement && formData.universityLogoUrl && formData.universityLogoUrl.startsWith('images/')) {
-        // For local images, we primarily rely on them being already loaded or loading quickly.
-        // The main challenge html2canvas has is with *external* not-yet-loaded images.
-        // If the local image isn't loaded, html2canvas might miss it.
-        // We ensure the src is correctly set to the local path.
-        // If the image isn't complete, we'll wrap PDF generation in its onload.
+        
         if (!logoImgElement.complete || logoImgElement.naturalHeight === 0) {
           originalLogoSrc = logoImgElement.src;
           originalLogoOnload = logoImgElement.onload;
           originalLogoOnerror = logoImgElement.onerror;
-          newSrcApplied = true; // Mark that we are managing this image's state
+          newSrcApplied = true; 
 
           await new Promise<void>((resolve, reject) => {
             const currentOnload = logoImgElement.onload;
             const currentOnerror = logoImgElement.onerror;
 
             logoImgElement.onload = () => {
-              if (currentOnload) currentOnload.call(logoImgElement); // Call original if it exists
-              logoImgElement.onload = originalLogoOnload; // Restore
-              logoImgElement.onerror = originalLogoOnerror; // Restore
+              if (currentOnload) currentOnload.call(logoImgElement); 
+              logoImgElement.onload = originalLogoOnload; 
+              logoImgElement.onerror = originalLogoOnerror; 
               resolve();
             };
             logoImgElement.onerror = (e) => {
-              if (currentOnerror) currentOnerror.call(logoImgElement, e); // Call original if it exists
-              logoImgElement.onload = originalLogoOnload; // Restore
-              logoImgElement.onerror = originalLogoOnerror; // Restore
+              if (currentOnerror) currentOnerror.call(logoImgElement, e); 
+              logoImgElement.onload = originalLogoOnload; 
+              logoImgElement.onerror = originalLogoOnerror; 
               console.error("Error loading local image onto image element for PDF:", e);
               reject(new Error("Error loading local image for PDF."));
             };
-            // If src is already correct, just ensure it's loaded. If not, this might re-trigger load.
-            // For local images, this often resolves quickly or is already done.
+            
           });
         }
       }
@@ -72,12 +67,12 @@ export default function CoverPageProApp() {
       const opt = {
         margin: 10,
         filename: `${formData.courseCode || 'course'}_${formData.reportType || 'report'}_cover.pdf`,
-        image: { type: 'png' }, // Use PNG for potentially better quality with logos
+        image: { type: 'png' }, 
         html2canvas: {
-          scale: 3, // Increased scale for better quality
+          scale: 3, 
           useCORS: true,
-          logging: false, // Keep logging off unless debugging
-          imageTimeout: 0, // Disable html2canvas internal timeout
+          logging: false, 
+          imageTimeout: 0, 
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
@@ -98,12 +93,8 @@ export default function CoverPageProApp() {
         description: error instanceof Error ? error.message : "There was an error generating your PDF. Please try again.",
       });
     } finally {
-       if (newSrcApplied && logoImgElement) { // Only restore if we explicitly managed it
-        if (originalLogoSrc && logoImgElement.src !== originalLogoSrc) {
-            // For local images, the src shouldn't have been changed to a data URI,
-            // so this restoration might not be strictly necessary if it was local to begin with.
-            // logoImgElement.src = originalLogoSrc; // Be cautious, could trigger re-load
-        }
+       if (newSrcApplied && logoImgElement) { 
+        
         logoImgElement.onload = originalLogoOnload;
         logoImgElement.onerror = originalLogoOnerror;
       }
@@ -154,9 +145,8 @@ export default function CoverPageProApp() {
             rel="noopener noreferrer"
             className="hover:text-[#180c52] hover:underline transition-colors font-semibold"
           >
-            Faysal Al Mahmud, CSE09, SFMU
-          </a>
-          .
+            Faysal Al Mahmud
+          </a>, CSE09, SFMU.
         </p>
         <p>&copy; {new Date().getFullYear()} Coverfy. All rights reserved.</p>
         <p>All credit goes to Team Musketeer, Gemini and SFMU Computer Club.</p>
