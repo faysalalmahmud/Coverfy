@@ -12,7 +12,7 @@ interface CoverPagePreviewProps {
 const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ data }, ref) => {
 
   const displaySubmissionDate = data.submissionDate || 'N/A';
-  const logoSrc = data.universityLogoUrl || "https://placehold.co/70x70.png";
+  const logoSrc = data.universityLogoUrl || "https://placehold.co/80x80.png";
 
 
   return (
@@ -32,18 +32,16 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
       }}
     >
       {/* University Header */}
-      <div className="text-center mb-6">
+      <div className="text-center mb-6 preview-content-block">
         <div className="flex flex-col items-center justify-center gap-1 mb-2">
             <img
                 id="universityLogoImage"
                 src={logoSrc} 
                 alt="University Logo"
-                width={70}
-                height={70}
-                className="object-contain"
+                className="object-contain university-logo-img"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
-                  target.src = "https://placehold.co/70x70.png"; 
+                  target.src = "https://placehold.co/80x80.png"; 
                   target.onerror = null; 
                 }}
             />
@@ -54,21 +52,21 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
 
       {/* Report Type */}
       {data.reportType && (
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 preview-content-block">
           <h2 className="text-xl font-semibold inline-block border-b-2 border-black pb-1">{data.reportType}</h2>
         </div>
       )}
 
       {/* Course Details */}
       {(data.courseTitle || data.courseCode) && (
-        <div className="mb-10 text-lg space-y-1 text-center">
+        <div className="mb-10 text-lg space-y-1 text-center preview-content-block">
           {data.courseTitle && <p><span className="font-semibold">Course Title:</span> {data.courseTitle}</p>}
           {data.courseCode && <p><span className="font-semibold">Course Code:</span> {data.courseCode}</p>}
         </div>
       )}
 
       {/* Submitted To */}
-      <div className="mb-10 space-y-0.5 text-center">
+      <div className="mb-10 space-y-0.5 text-center preview-content-block">
         <h3 className="text-lg font-semibold inline-block border-b-2 border-black pb-1 mb-1.5">Submitted To,</h3>
         {data.teacherName && <p className="text-lg">{data.teacherName}</p>}
         {data.teacherDesignation && <p className="text-sm">{data.teacherDesignation}</p>}
@@ -77,7 +75,7 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
       </div>
 
       {/* Submitted By */}
-      <div className="mb-6 space-y-0.5 text-center">
+      <div className="mb-6 space-y-0.5 text-center preview-content-block">
         <h3 className="text-lg font-semibold inline-block border-b-2 border-black pb-1 mb-1.5">Submitted by,</h3>
         {data.studentName && <p className="text-lg">{data.studentName}</p>}
         {data.studentId && <p className="text-sm">Id-{data.studentId}</p>}
@@ -98,6 +96,11 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
       </div>
 
       <style jsx global>{`
+        .university-logo-img {
+          width: 80px;
+          height: 80px;
+          object-fit: contain;
+        }
         @media print {
           body {
             -webkit-print-color-adjust: exact;
@@ -114,18 +117,26 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
             height: auto; 
             min-height: 0;
             aspect-ratio: 190 / 277; 
-            padding: 5% !important; 
-            border-width: 2px !important;
+            padding: 3% !important; 
+            border-width: 1px !important;
           }
            /* Using rem for font sizes for better control and accessibility */
            /* These will override Tailwind classes for elements within .a4-preview on small screens */
-           .a4-preview h1 { font-size: 1.2rem; } 
-           .a4-preview h2 { font-size: 1.1rem; } 
-           .a4-preview h3 { font-size: 0.9rem; } 
-           .a4-preview p { font-size: 0.825rem; } 
-           .a4-preview .text-sm { font-size: 0.77rem; } 
-           .a4-preview .text-xs { font-size: 0.715rem; } 
-           .a4-preview .text-base { font-size: 0.88rem; } 
+           .a4-preview h1 { font-size: 1.1rem !important; } 
+           .a4-preview h2 { font-size: 1.0rem !important; } 
+           .a4-preview h3 { font-size: 0.85rem !important; } 
+           .a4-preview p { font-size: 0.775rem !important; } 
+           .a4-preview .text-sm { font-size: 0.72rem !important; } 
+           .a4-preview .text-xs { font-size: 0.665rem !important; } 
+           .a4-preview .text-base { font-size: 0.825rem !important; }
+           .a4-preview .text-lg { font-size: 0.95rem !important; }
+           .a4-preview .university-logo-img {
+             width: 55px !important;
+             height: 55px !important;
+           }
+           .a4-preview .preview-content-block {
+             margin-bottom: 0.75rem !important; /* Corresponds to mb-3 or mb-4 roughly */
+           }
         }
         /* Specific styles for print and general display for PDF generation */
         #coverPageA4, #coverPageA4 * {
