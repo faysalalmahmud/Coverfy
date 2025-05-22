@@ -122,15 +122,14 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
             padding: 2% !important; 
             border-width: 1px !important; 
           }
-           .a4-preview h1 { font-size: 1.4rem !important; } 
-           .a4-preview h2 { font-size: 1.3rem !important; } 
-           .a4-preview h3 { font-size: 1.2rem !important; } 
-           .a4-preview p { font-size: 1.1rem !important; } 
-           .a4-preview .text-sm { font-size: 1.0rem !important; } 
-           .a4-preview .text-xs { font-size: 0.9rem !important; } 
-           .a4-preview .text-base { font-size: 1.1rem !important; } 
-           .a4-preview .text-lg { font-size: 1.2rem !important; } 
-           .a4-preview .text-xl { font-size: 1.3rem !important; } 
+           .a4-preview h1 { font-size: 1.3rem !important; } /* University Name */
+           .a4-preview h2 { font-size: 1.35rem !important; } /* Report Type & Main Dept Name */
+           .a4-preview h3 { font-size: 1.2rem !important; } /* Submitted To/By Headings */
+           .a4-preview p { font-size: 1.1rem !important; } /* General text, including course title/code text */
+           .a4-preview .text-base { font-size: 1.0rem !important; } /* Smaller details, was 1.1rem */
+           .a4-preview .text-lg { font-size: 1.1rem !important; } /* Submission date, was 1.2rem */
+           .a4-preview .text-xl { font-size: 1.2rem !important; } /* Names in submitted to/by, was 1.3rem */
+           
            .a4-preview .university-logo-img {
              width: 55px !important;
              height: 55px !important;
@@ -138,8 +137,8 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
            .a4-preview .preview-content-block {
              margin-bottom: 0.6rem !important; 
            }
-           .a4-preview .report-type-spacing { /* Added class for report type div */
-             margin-bottom: 1.2rem !important; /* Increase space after report type for small devices */
+           .a4-preview .report-type-spacing {
+             margin-bottom: 1.2rem !important; 
            }
         }
         
@@ -153,4 +152,3 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
 
 CoverPagePreview.displayName = "CoverPagePreview";
 export default CoverPagePreview;
-
