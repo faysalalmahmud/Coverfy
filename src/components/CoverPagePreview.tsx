@@ -23,12 +23,12 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
       style={{
         width: '190mm',
         minHeight: '277mm',
-        height: '277mm',
+        height: '277mm', // Ensure fixed height to help with single-page PDF
         boxSizing: 'border-box',
         fontFamily: "'Times New Roman', Times, serif",
         fontSize: '12pt', // Base font size for PDF
-        border: '3px solid black',
-        padding: '10mm',
+        border: '4px solid black', // Increased border thickness
+        padding: '10mm', // Internal padding to act as page margins
         WebkitFontSmoothing: 'antialiased',
         MozOsxFontSmoothing: 'grayscale',
       }}
@@ -120,7 +120,7 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
             min-height: 0;
             aspect-ratio: 190 / 277;
             padding: 2% !important; 
-            border-width: 1px !important; 
+            border-width: 4px !important; /* Increased border for small devices */
           }
            .a4-preview .university-name-heading { font-size: 1.5rem !important; } 
            .a4-preview .main-department-heading { font-size: 1.4rem !important; } 
