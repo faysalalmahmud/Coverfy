@@ -122,15 +122,15 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
             padding: 2% !important; 
             border-width: 1px !important; 
           }
-           .a4-preview h1 { font-size: 1.3rem !important; } 
-           .a4-preview h2 { font-size: 1.2rem !important; } 
-           .a4-preview h3 { font-size: 1.1rem !important; } 
-           .a4-preview p { font-size: 1.0rem !important; } 
-           .a4-preview .text-sm { font-size: 0.9rem !important; } 
-           .a4-preview .text-xs { font-size: 0.8rem !important; } 
-           .a4-preview .text-base { font-size: 1.0rem !important; } 
-           .a4-preview .text-lg { font-size: 1.1rem !important; } 
-           .a4-preview .text-xl { font-size: 1.2rem !important; } 
+           .a4-preview h1 { font-size: 1.4rem !important; } 
+           .a4-preview h2 { font-size: 1.3rem !important; } 
+           .a4-preview h3 { font-size: 1.2rem !important; } 
+           .a4-preview p { font-size: 1.1rem !important; } 
+           .a4-preview .text-sm { font-size: 1.0rem !important; } 
+           .a4-preview .text-xs { font-size: 0.9rem !important; } 
+           .a4-preview .text-base { font-size: 1.1rem !important; } 
+           .a4-preview .text-lg { font-size: 1.2rem !important; } 
+           .a4-preview .text-xl { font-size: 1.3rem !important; } 
            .a4-preview .university-logo-img {
              width: 55px !important;
              height: 55px !important;
