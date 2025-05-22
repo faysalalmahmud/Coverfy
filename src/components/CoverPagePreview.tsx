@@ -132,8 +132,8 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
            .a4-preview .text-xl { font-size: 1.2rem !important; } 
            
            .a4-preview .university-logo-img {
-             width: 60px !important; 
-             height: 60px !important; 
+             width: 65px !important; 
+             height: 65px !important; 
            }
            .a4-preview .preview-content-block {
              margin-bottom: 0.6rem !important; 
@@ -142,7 +142,7 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
            .a4-preview .report-type-spacing {
              margin-bottom: 1.2rem !important; 
            }
-           .a4-preview .course-details-block { margin-bottom: 1.2rem !important; } 
+           .a4-preview .course-details-block { margin-bottom: 1.4rem !important; } 
         }
         
         #coverPageA4, #coverPageA4 * {
