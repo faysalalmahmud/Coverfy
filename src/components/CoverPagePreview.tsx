@@ -43,8 +43,8 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
                 className="object-contain university-logo-img"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
-                  target.src = "https://placehold.co/80x80.png";
-                  target.onerror = null;
+                  target.src = "https://placehold.co/80x80.png"; // Fallback placeholder
+                  target.onerror = null; // Prevent infinite loop if placeholder also fails
                 }}
             />
             {data.universityName && <h1 className="text-2xl font-bold text-center university-name-heading">{data.universityName}{data.universityAcronym ? ` (${data.universityAcronym})` : ''}</h1>}
@@ -61,9 +61,9 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
 
       {/* Course Details */}
       {(data.courseTitle || data.courseCode) && (
-        <div className="mb-12 text-xl text-center preview-content-block course-details-block">
-          {data.courseTitle && <p><span className="font-semibold">Course Title:</span> {data.courseTitle}</p>}
-          {data.courseCode && <p className="mt-0.5"><span className="font-semibold">Course Code:</span> {data.courseCode}</p>}
+        <div className="mb-12 text-center preview-content-block course-details-block">
+          {data.courseTitle && <p className="text-xl"><span className="font-semibold">Course Title:</span> {data.courseTitle}</p>}
+          {data.courseCode && <p className="text-xl mt-0.5"><span className="font-semibold">Course Code:</span> {data.courseCode}</p>}
         </div>
       )}
 
@@ -122,18 +122,18 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
             padding: 2% !important; 
             border-width: 1px !important; 
           }
-           .a4-preview .university-name-heading { font-size: 1.4rem !important; } 
-           .a4-preview .main-department-heading { font-size: 1.3rem !important; } 
-           .a4-preview .report-type-heading { font-size: 1.35rem !important; } 
-           .a4-preview h3 { font-size: 1.2rem !important; } 
-           .a4-preview p { font-size: 1.1rem !important; } 
-           .a4-preview .text-base { font-size: 1.0rem !important; } 
-           .a4-preview .text-lg { font-size: 1.1rem !important; } 
-           .a4-preview .text-xl { font-size: 1.2rem !important; } 
+           .a4-preview .university-name-heading { font-size: 1.5rem !important; } 
+           .a4-preview .main-department-heading { font-size: 1.4rem !important; } 
+           .a4-preview .report-type-heading { font-size: 1.45rem !important; } 
+           .a4-preview h3 { font-size: 1.3rem !important; } 
+           .a4-preview p { font-size: 1.2rem !important; } 
+           .a4-preview .text-base { font-size: 1.1rem !important; } 
+           .a4-preview .text-lg { font-size: 1.2rem !important; } 
+           .a4-preview .text-xl { font-size: 1.3rem !important; } 
            
            .a4-preview .university-logo-img {
-             width: 65px !important; 
-             height: 65px !important; 
+             width: 70px !important; 
+             height: 70px !important; 
            }
            .a4-preview .preview-content-block {
              margin-bottom: 0.6rem !important; 
@@ -142,7 +142,7 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
            .a4-preview .report-type-spacing {
              margin-bottom: 1.2rem !important; 
            }
-           .a4-preview .course-details-block { margin-bottom: 1.4rem !important; } 
+           .a4-preview .course-details-block { margin-bottom: 1.6rem !important; } 
         }
         
         #coverPageA4, #coverPageA4 * {
@@ -155,3 +155,4 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
 
 CoverPagePreview.displayName = "CoverPagePreview";
 export default CoverPagePreview;
+
