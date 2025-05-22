@@ -33,41 +33,13 @@ export default function CoverPageProApp() {
     let newSrcApplied = false; // Track if we actually changed the src
 
     try {
-      // Only attempt to process the logo if it's an external URL
-      if (logoImgElement && formData.universityLogoUrl && !formData.universityLogoUrl.startsWith('data:') && !formData.universityLogoUrl.startsWith('images/')) {
-        originalLogoSrc = logoImgElement.src; // Capture current src
-        originalLogoOnload = logoImgElement.onload; // Capture current onload
-        originalLogoOnerror = logoImgElement.onerror; // Capture current onerror
+      // Only attempt to process the logo if it's a local image (in public/images) and not a Data URI
+      if (logoImgElement && formData.universityLogoUrl && formData.universityLogoUrl.startsWith('images/')) {
+        originalLogoSrc = logoImgElement.src;
+        originalLogoOnload = logoImgElement.onload;
+        originalLogoOnerror = logoImgElement.onerror;
         
-        const response = await fetch(formData.universityLogoUrl);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch logo: ${response.statusText}`);
-        }
-        const blob = await response.blob();
-        const dataUrl = await new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve(reader.result as string);
-          reader.onerror = reject;
-          reader.readAsDataURL(blob);
-        });
-
-        // Wait for the Data URI to be loaded onto the image element
-        await new Promise<void>((resolve, reject) => {
-          if (logoImgElement) {
-            logoImgElement.onload = () => resolve();
-            logoImgElement.onerror = (e) => {
-              console.error("Error loading Data URI on image:", e);
-              reject(new Error("Error loading Data URI onto image element."));
-            };
-            logoImgElement.src = dataUrl;
-            newSrcApplied = true; // Mark that we've applied a new src
-          } else {
-            // Should not happen if logoImgElement was found earlier
-            resolve(); 
-          }
-        });
-      } else if (logoImgElement && formData.universityLogoUrl && formData.universityLogoUrl.startsWith('images/')) {
-        // For local images, ensure they are loaded before proceeding
+        // Ensure the local image is fully loaded before capturing
         await new Promise<void>((resolve, reject) => {
           if (logoImgElement.complete && logoImgElement.naturalHeight !== 0) {
             resolve(); // Image already loaded
@@ -79,19 +51,20 @@ export default function CoverPageProApp() {
             };
           }
         });
+        newSrcApplied = true; // Mark that we've effectively waited for it if it wasn't preloaded.
       }
 
 
       const html2pdf = (await import('html2pdf.js')).default;
       const opt = {
-        margin: 10,
+        margin: 10, // 10mm margin on all sides of the PDF page
         filename: `${formData.courseCode || 'course'}_${formData.reportType || 'report'}_cover.pdf`,
-        image: { type: 'png' }, // Use PNG to better preserve logo quality
+        image: { type: 'png' }, 
         html2canvas: {
-          scale: 3, // Increased scale for better quality
-          useCORS: true,
-          logging: false, // Explicitly disable html2canvas logging
-          imageTimeout: 0, // Disable html2canvas internal timeout for images
+          scale: 3, 
+          useCORS: true, 
+          logging: false, 
+          imageTimeout: 0, 
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
@@ -103,11 +76,10 @@ export default function CoverPageProApp() {
       });
     } catch (error) {
       console.error("Failed to download PDF or process logo:", error);
-      // Check if the error message indicates a logo fetching issue
       const isLogoError = error instanceof Error && (
-        error.message.startsWith("Failed to fetch logo") ||
-        error.message.includes("Data URI") ||
-        error.message.includes("local image")
+        error.message.startsWith("Failed to fetch logo") || // Kept for broader catching, though less likely now
+        error.message.includes("Data URI") || // Kept for broader catching
+        error.message.includes("local image") 
       );
 
       toast({
@@ -116,9 +88,11 @@ export default function CoverPageProApp() {
         description: error instanceof Error ? error.message : "There was an error generating your PDF. Please try again.",
       });
     } finally {
-      // Restore original image src and handlers only if they were changed
+      // Restore original image src and handlers only if they were potentially changed/interacted with
       if (logoImgElement && originalLogoSrc && newSrcApplied) {
-        logoImgElement.src = originalLogoSrc;
+        // If it's a local image, it doesn't need its src 'restored' in the same way
+        // a Data URI-converted one would. We mainly ensure handlers are reset.
+        logoImgElement.src = originalLogoSrc; // Re-assign to be safe, though browser might cache
         logoImgElement.onload = originalLogoOnload;
         logoImgElement.onerror = originalLogoOnerror;
       }
@@ -131,7 +105,7 @@ export default function CoverPageProApp() {
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl font-bold" style={{ color: '#180c52' }}>Coverfy</h1>
           <p className="text-primary-foreground/90 mt-1">
-            A Team Musketeer's Academic cover generator
+            A  Team Musketeer's Academic cover generator
           </p>
         </div>
       </header>
@@ -173,9 +147,8 @@ export default function CoverPageProApp() {
           , CSE09, SFMU.
         </p>
         <p>&copy; {new Date().getFullYear()} Coverfy. All rights reserved.</p>
-        <p>All credit goes to Team Musketeer and Gemini.</p>
+        <p>All credit goes to Team Musketeer, Gemini and SFMU Computer Club.</p>
       </footer>
     </div>
   );
 }
-
