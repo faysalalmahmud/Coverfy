@@ -7,7 +7,7 @@ import { initialCoverPageData } from '@/types/cover-page';
 import CoverPageForm from '@/components/CoverPageForm';
 import CoverPagePreview from '@/components/CoverPagePreview';
 import { Button } from '@/components/ui/button';
-import { Download } from 'lucide-react'; 
+import { Download } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 export default function CoverPageProApp() {
@@ -30,53 +30,59 @@ export default function CoverPageProApp() {
     let originalLogoSrc: string | undefined = undefined;
     let originalLogoOnload: ((this: GlobalEventHandlers, ev: Event) => any) | null = null;
     let originalLogoOnerror: OnErrorEventHandler = null;
-    let newSrcApplied = false;
+    let newSrcApplied = false; // Tracks if we attempted to change the src
 
     try {
       if (logoImgElement && formData.universityLogoUrl && formData.universityLogoUrl.startsWith('images/')) {
-        originalLogoSrc = logoImgElement.src; 
-        originalLogoOnload = logoImgElement.onload;
-        originalLogoOnerror = logoImgElement.onerror;
-        newSrcApplied = true;
-
-        // Ensure the local image is fully loaded before capturing
-        // This might involve temporarily attaching new onload/onerror handlers
-        // if the image isn't already loaded.
+        // For local images, we primarily rely on them being already loaded or loading quickly.
+        // The main challenge html2canvas has is with *external* not-yet-loaded images.
+        // If the local image isn't loaded, html2canvas might miss it.
+        // We ensure the src is correctly set to the local path.
+        // If the image isn't complete, we'll wrap PDF generation in its onload.
         if (!logoImgElement.complete || logoImgElement.naturalHeight === 0) {
+          originalLogoSrc = logoImgElement.src;
+          originalLogoOnload = logoImgElement.onload;
+          originalLogoOnerror = logoImgElement.onerror;
+          newSrcApplied = true; // Mark that we are managing this image's state
+
           await new Promise<void>((resolve, reject) => {
             const currentOnload = logoImgElement.onload;
             const currentOnerror = logoImgElement.onerror;
+
             logoImgElement.onload = () => {
-              logoImgElement.onload = currentOnload; // Restore
-              logoImgElement.onerror = currentOnerror; // Restore
+              if (currentOnload) currentOnload.call(logoImgElement); // Call original if it exists
+              logoImgElement.onload = originalLogoOnload; // Restore
+              logoImgElement.onerror = originalLogoOnerror; // Restore
               resolve();
             };
             logoImgElement.onerror = (e) => {
-              logoImgElement.onload = currentOnload; // Restore
-              logoImgElement.onerror = currentOnerror; // Restore
-              console.error("Error loading local image for PDF:", e);
-              reject(new Error("Error loading local image onto image element for PDF."));
+              if (currentOnerror) currentOnerror.call(logoImgElement, e); // Call original if it exists
+              logoImgElement.onload = originalLogoOnload; // Restore
+              logoImgElement.onerror = originalLogoOnerror; // Restore
+              console.error("Error loading local image onto image element for PDF:", e);
+              reject(new Error("Error loading local image for PDF."));
             };
-            // If src hasn't changed, browser might not re-trigger load,
-            // but for local images this setup should be okay.
+            // If src is already correct, just ensure it's loaded. If not, this might re-trigger load.
+            // For local images, this often resolves quickly or is already done.
           });
         }
       }
 
       const html2pdf = (await import('html2pdf.js')).default;
       const opt = {
-        margin: 10, 
+        margin: 10,
         filename: `${formData.courseCode || 'course'}_${formData.reportType || 'report'}_cover.pdf`,
-        image: { type: 'png' },
+        image: { type: 'png' }, // Use PNG for potentially better quality with logos
         html2canvas: {
-          scale: 3,
+          scale: 3, // Increased scale for better quality
           useCORS: true,
-          logging: false,
-          imageTimeout: 0,
+          logging: false, // Keep logging off unless debugging
+          imageTimeout: 0, // Disable html2canvas internal timeout
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
       };
+
       await html2pdf().from(element).set(opt).save();
       toast({
         title: "Download Started",
@@ -88,21 +94,22 @@ export default function CoverPageProApp() {
 
       toast({
         variant: "destructive",
-        title: isLogoError ? "Logo Processing Error" : "Download Failed",
+        title: isLogoError ? "Local Logo Error" : "Download Failed",
         description: error instanceof Error ? error.message : "There was an error generating your PDF. Please try again.",
       });
     } finally {
-      if (logoImgElement && originalLogoSrc && newSrcApplied) {
-        // Restore original properties if they were captured
-        // For local images, src restoration is less critical than handlers
-        if (logoImgElement.src !== originalLogoSrc) { // Only if it was actually changed to a data URI (not current logic)
-             // logoImgElement.src = originalLogoSrc; 
+       if (newSrcApplied && logoImgElement) { // Only restore if we explicitly managed it
+        if (originalLogoSrc && logoImgElement.src !== originalLogoSrc) {
+            // For local images, the src shouldn't have been changed to a data URI,
+            // so this restoration might not be strictly necessary if it was local to begin with.
+            // logoImgElement.src = originalLogoSrc; // Be cautious, could trigger re-load
         }
         logoImgElement.onload = originalLogoOnload;
         logoImgElement.onerror = originalLogoOnerror;
       }
     }
   };
+
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -145,9 +152,9 @@ export default function CoverPageProApp() {
             href="https://www.linkedin.com/in/faysalalmahmud/"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-primary hover:underline transition-colors font-semibold"
+            className="hover:text-[#180c52] hover:underline transition-colors font-semibold"
           >
-            Faysal Al Mahmud
+            Faysal Al Mahmud, CSE09, SFMU
           </a>
           .
         </p>
