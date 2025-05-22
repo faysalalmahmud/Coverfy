@@ -26,10 +26,45 @@ export default function CoverPageProApp() {
       return;
     }
 
-    // With a local image, the complex Data URI conversion is no longer needed.
-    // html2pdf.js should handle local images more reliably.
+    const logoImgElement = element.querySelector('#universityLogoImage') as HTMLImageElement | null;
+    let originalLogoSrc: string | undefined = undefined;
+    let originalLogoOnload: ((this: GlobalEventHandlers, ev: Event) => any) | null = null;
+    let originalLogoOnerror: OnErrorEventHandler = null;
+    let newSrcApplied = false;
 
     try {
+      if (logoImgElement && formData.universityLogoUrl && !formData.universityLogoUrl.startsWith('data:')) {
+        originalLogoSrc = logoImgElement.src;
+        originalLogoOnload = logoImgElement.onload;
+        originalLogoOnerror = logoImgElement.onerror;
+        
+        const response = await fetch(formData.universityLogoUrl);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch logo: ${response.statusText}`);
+        }
+        const blob = await response.blob();
+        const dataUrl = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result as string);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+
+        await new Promise<void>((resolve, reject) => {
+          if (logoImgElement) {
+            logoImgElement.onload = () => resolve();
+            logoImgElement.onerror = (e) => {
+              console.error("Error loading Data URI on image:", e);
+              reject(new Error("Error loading Data URI onto image element."));
+            };
+            logoImgElement.src = dataUrl;
+            newSrcApplied = true;
+          } else {
+            resolve(); // Should not happen if logoImgElement was found
+          }
+        });
+      }
+
       const html2pdf = (await import('html2pdf.js')).default;
       const opt = {
         margin: 10,
@@ -39,7 +74,7 @@ export default function CoverPageProApp() {
           scale: 3,
           useCORS: true,
           logging: false,
-          imageTimeout: 0,
+          imageTimeout: 0, 
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
@@ -49,13 +84,19 @@ export default function CoverPageProApp() {
         title: "Download Started",
         description: "Your PDF cover page is being downloaded.",
       });
-    } catch (pdfError) {
-      console.error("Failed to download PDF:", pdfError);
+    } catch (error) {
+      console.error("Failed to download PDF or process logo:", error);
       toast({
         variant: "destructive",
-        title: "Download Failed",
-        description: "There was an error generating your PDF. Please try again.",
+        title: error instanceof Error && error.message.startsWith("Failed to fetch logo") ? "Logo Error" : "Download Failed",
+        description: error instanceof Error ? error.message : "There was an error generating your PDF. Please try again.",
       });
+    } finally {
+      if (logoImgElement && originalLogoSrc && newSrcApplied) {
+        logoImgElement.src = originalLogoSrc;
+        logoImgElement.onload = originalLogoOnload;
+        logoImgElement.onerror = originalLogoOnerror;
+      }
     }
   };
 
@@ -74,14 +115,16 @@ export default function CoverPageProApp() {
         <div className="grid lg:grid-cols-5 gap-8">
           <div className="lg:col-span-2">
             <CoverPageForm onDataChange={setFormData} initialData={formData} />
+            <div className="mt-6 flex justify-center">
+              <Button onClick={handleDownloadPdf} variant="outline" size="lg" className="w-full md:w-auto">
+                <Download className="mr-2 h-4 w-4" /> Download PDF
+              </Button>
+            </div>
           </div>
           <div className="lg:col-span-3">
             <div className="sticky top-8">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-semibold">Preview</h2>
-                <Button onClick={handleDownloadPdf} variant="outline" size="sm">
-                  <Download className="mr-2 h-4 w-4" /> Download PDF
-                </Button>
               </div>
               <div className="bg-muted p-2 md:p-4 rounded-lg shadow-inner overflow-x-auto">
                  <CoverPagePreview ref={coverPageRef} data={formData} />
