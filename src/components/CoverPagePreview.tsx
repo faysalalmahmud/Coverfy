@@ -52,7 +52,7 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
 
       {/* Report Type */}
       {data.reportType && (
-        <div className="text-center mb-8 preview-content-block">
+        <div className="text-center mb-10 preview-content-block"> {/* Changed mb-8 to mb-10 */}
           <h2 className="text-2xl font-semibold inline-block border-b-2 border-black pb-1">{data.reportType}</h2>
         </div>
       )}
@@ -121,15 +121,15 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
             border-width: 1px !important; /* Thinner border */
           }
            /* Using rem for font sizes for better control and accessibility */
-           .a4-preview h1 { font-size: 1.3rem !important; } /* Reverted */
-           .a4-preview h2 { font-size: 1.2rem !important; } /* Reverted */
-           .a4-preview h3 { font-size: 1.1rem !important; } /* Increased */
-           .a4-preview p { font-size: 1.0rem !important; } /* Increased */
-           .a4-preview .text-sm { font-size: 0.9rem !important; } /* text-xs to text-sm -> 0.85rem to 0.9rem */
-           .a4-preview .text-xs { font-size: 0.8rem !important; } /* (was 0.75rem previously, now 0.8rem) */
-           .a4-preview .text-base { font-size: 1.0rem !important; } /* text-sm to text-base -> 0.95rem to 1.0rem*/
-           .a4-preview .text-lg { font-size: 1.1rem !important; } /* text-base to text-lg -> 1.0rem to 1.1rem */
-           .a4-preview .text-xl { font-size: 1.2rem !important; } /* text-lg to text-xl -> 1.1rem to 1.2rem */
+           .a4-preview h1 { font-size: 1.3rem !important; } 
+           .a4-preview h2 { font-size: 1.2rem !important; } 
+           .a4-preview h3 { font-size: 1.1rem !important; } 
+           .a4-preview p { font-size: 1.0rem !important; } 
+           .a4-preview .text-sm { font-size: 0.9rem !important; } 
+           .a4-preview .text-xs { font-size: 0.8rem !important; } 
+           .a4-preview .text-base { font-size: 1.0rem !important; } 
+           .a4-preview .text-lg { font-size: 1.1rem !important; } 
+           .a4-preview .text-xl { font-size: 1.2rem !important; } 
            .a4-preview .university-logo-img {
              width: 55px !important;
              height: 55px !important;
@@ -149,4 +149,3 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
 
 CoverPagePreview.displayName = "CoverPagePreview";
 export default CoverPagePreview;
-
