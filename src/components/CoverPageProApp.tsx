@@ -27,60 +27,71 @@ export default function CoverPageProApp() {
     }
 
     const logoImgElement = element.querySelector('#universityLogoImage') as HTMLImageElement | null;
-    let originalLogoSrc: string | undefined = undefined;
     let originalLogoOnload: ((this: GlobalEventHandlers, ev: Event) => any) | null = null;
     let originalLogoOnerror: OnErrorEventHandler = null;
-    let newSrcApplied = false;
+    let newSrcApplied = false; // Tracks if we've modified handlers for pre-loading
 
     try {
+      // This block is mainly for ensuring local images are rendered before PDF capture
+      // if they might not have been fully processed by the browser yet.
       if (logoImgElement && formData.universityLogoUrl && formData.universityLogoUrl.startsWith('images/')) {
-        // For local images, html2canvas should generally handle them directly without needing Data URI conversion
-        // if they are correctly referenced and part of the static assets.
-        // However, to be absolutely sure, we can still attempt to load it onto the image element
-        // especially if there are complex CSS transformations or parent opacities affecting it.
-
         // Check if the image is already loaded and rendered by the browser
         if (!logoImgElement.complete || logoImgElement.naturalHeight === 0) {
-          // Image might not be fully rendered by the browser yet.
-          // Attempt to force load it by re-setting its src or waiting for onload.
-          originalLogoSrc = logoImgElement.src;
           originalLogoOnload = logoImgElement.onload;
           originalLogoOnerror = logoImgElement.onerror;
           newSrcApplied = true;
 
           await new Promise<void>((resolve, reject) => {
-            const currentOnload = logoImgElement.onload;
-            const currentOnerror = logoImgElement.onerror;
+            const currentOnload = logoImgElement.onload; // Original onload we might want to call
+            const currentOnerror = logoImgElement.onerror; // Original onerror
 
-            logoImgElement.onload = () => {
-              if (currentOnload) currentOnload.call(logoImgElement); // Call original if it existed
-              logoImgElement.onload = originalLogoOnload; // Restore
-              logoImgElement.onerror = originalLogoOnerror; // Restore
+            logoImgElement.onload = (event: Event) => { // Accept the event
+              if (currentOnload) {
+                currentOnload.call(logoImgElement, event); // Pass the event
+              }
+              // Restore original handlers *after* our logic and resolving
+              logoImgElement.onload = originalLogoOnload;
+              logoImgElement.onerror = originalLogoOnerror;
               resolve();
             };
-            logoImgElement.onerror = (e) => {
-              if (currentOnerror) currentOnerror.call(logoImgElement, e); // Call original if it existed
-              logoImgElement.onload = originalLogoOnload; // Restore
-              logoImgElement.onerror = originalLogoOnerror; // Restore
-              console.error("Error loading local image onto image element for PDF:", e);
-              reject(new Error("Error loading local image for PDF."));
+
+            logoImgElement.onerror = (e, source, lineno, colno, error) => {
+              if (currentOnerror) {
+                if (typeof currentOnerror === 'function') {
+                  currentOnerror.call(logoImgElement, e, source, lineno, colno, error);
+                }
+              }
+              // Restore original handlers *after* our logic and rejecting
+              logoImgElement.onload = originalLogoOnload;
+              logoImgElement.onerror = originalLogoOnerror;
+              console.error("Error explicitly loading local image for PDF:", e);
+              reject(new Error("Error preparing local image for PDF."));
             };
-            // If src needs to be reset to trigger load for local images (usually not, but as a fallback)
-            // logoImgElement.src = formData.universityLogoUrl;
+
+            // If the src is already correct for local images, re-setting it might not be necessary
+            // unless there's a specific reason to re-trigger the load event.
+            // For now, we assume the browser will handle it if `complete` is false.
+            // If issues persist, uncommenting the src reset might be needed:
+            // if (logoImgElement.src !== (new URL(formData.universityLogoUrl, window.location.href)).href) {
+            //    logoImgElement.src = formData.universityLogoUrl;
+            // } else {
+            //    // If src is already set and image is not complete, it might be a broken link or still loading.
+            //    // The handlers above will catch this.
+            // }
           });
         }
       }
 
       const html2pdf = (await import('html2pdf.js')).default;
       const opt = {
-        margin: 10, // 10mm margin on all sides of the PDF page
+        margin: 10,
         filename: `${formData.courseCode || 'course'}_${formData.reportType || 'report'}_cover.pdf`,
-        image: { type: 'png' }, // Use PNG for image processing
+        image: { type: 'png' },
         html2canvas: {
-          scale: 3, // Increased scale for better quality
+          scale: 3,
           useCORS: true,
-          logging: false, // Explicitly turn off logging
-          imageTimeout: 0, // Disable html2canvas internal image timeout
+          logging: false,
+          imageTimeout: 0,
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
@@ -102,13 +113,9 @@ export default function CoverPageProApp() {
       });
     } finally {
        if (newSrcApplied && logoImgElement) {
-        // Restore original handlers if they were changed
+        // Ensure original handlers are restored if we overwrote them
         logoImgElement.onload = originalLogoOnload;
         logoImgElement.onerror = originalLogoOnerror;
-        // if originalLogoSrc was captured and src was changed, restore it:
-        // if (originalLogoSrc && logoImgElement.src !== originalLogoSrc) {
-        //   logoImgElement.src = originalLogoSrc;
-        // }
       }
     }
   };
