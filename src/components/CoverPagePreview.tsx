@@ -29,10 +29,12 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
         fontSize: '12pt', // Base font size for PDF
         border: '3px solid black',
         padding: '10mm',
+        WebkitFontSmoothing: 'antialiased',
+        MozOsxFontSmoothing: 'grayscale',
       }}
     >
       {/* University Header */}
-      <div className="text-center mb-6 preview-content-block"> {/* Increased mb-2 to mb-6 */}
+      <div className="text-center mb-6 preview-content-block">
         <div className="flex flex-col items-center justify-center gap-1 mb-2">
             <img
                 id="universityLogoImage"
@@ -52,7 +54,7 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
 
       {/* Report Type */}
       {data.reportType && (
-        <div className="text-center mb-10 preview-content-block"> {/* Changed mb-8 to mb-10 */}
+        <div className="text-center mb-10 preview-content-block">
           <h2 className="text-2xl font-semibold inline-block border-b-2 border-black pb-1">{data.reportType}</h2>
         </div>
       )}
@@ -97,8 +99,8 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
 
       <style jsx global>{`
         .university-logo-img {
-          width: 80px; /* Default size */
-          height: 80px; /* Default size */
+          width: 80px; 
+          height: 80px; 
           object-fit: contain;
         }
         @media print {
@@ -107,20 +109,19 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
             print-color-adjust: exact;
           }
           .a4-preview {
-            box-shadow: none !important; /* Ensure no shadow in print/PDF */
+            box-shadow: none !important; 
           }
         }
-        /* Responsive adjustments for screen preview */
-        @media (max-width: 850px) { /* Adjusted breakpoint */
+        
+        @media (max-width: 850px) { 
           .a4-preview {
             width: 100%;
             height: auto;
             min-height: 0;
             aspect-ratio: 190 / 277;
-            padding: 2% !important; /* Reduced padding */
-            border-width: 1px !important; /* Thinner border */
+            padding: 2% !important; 
+            border-width: 1px !important; 
           }
-           /* Using rem for font sizes for better control and accessibility */
            .a4-preview h1 { font-size: 1.3rem !important; } 
            .a4-preview h2 { font-size: 1.2rem !important; } 
            .a4-preview h3 { font-size: 1.1rem !important; } 
@@ -135,10 +136,10 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
              height: 55px !important;
            }
            .a4-preview .preview-content-block {
-             margin-bottom: 0.6rem !important; /* Slightly reduced responsive margin */
+             margin-bottom: 0.6rem !important; 
            }
         }
-        /* Specific styles for print and general display for PDF generation */
+        
         #coverPageA4, #coverPageA4 * {
           color: #000000 !important;
         }
@@ -149,3 +150,4 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
 
 CoverPagePreview.displayName = "CoverPagePreview";
 export default CoverPagePreview;
+
