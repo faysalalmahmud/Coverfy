@@ -120,7 +120,7 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
             min-height: 0;
             aspect-ratio: 190 / 277;
             padding: 2% !important; 
-            border-width: 4px !important; /* Increased border for small devices */
+            border-width: 4px !important;
           }
            .a4-preview .university-name-heading { font-size: 1.5rem !important; } 
            .a4-preview .main-department-heading { font-size: 1.4rem !important; } 
@@ -132,8 +132,8 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
            .a4-preview .text-xl { font-size: 1.3rem !important; } 
            
            .a4-preview .university-logo-img {
-             width: 70px !important; 
-             height: 70px !important; 
+             width: 75px !important; 
+             height: 75px !important; 
            }
            .a4-preview .preview-content-block {
              margin-bottom: 0.6rem !important; 
@@ -142,7 +142,7 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
            .a4-preview .report-type-spacing {
              margin-bottom: 1.2rem !important; 
            }
-           .a4-preview .course-details-block { margin-bottom: 1.6rem !important; } 
+           .a4-preview .course-details-block { margin-bottom: 1.8rem !important; } 
         }
         
         #coverPageA4, #coverPageA4 * {
