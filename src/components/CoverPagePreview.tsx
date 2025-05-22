@@ -54,7 +54,7 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
 
       {/* Report Type */}
       {data.reportType && (
-        <div className="text-center mb-10 preview-content-block">
+        <div className="text-center mb-10 preview-content-block report-type-spacing">
           <h2 className="text-2xl font-semibold inline-block border-b-2 border-black pb-1">{data.reportType}</h2>
         </div>
       )}
@@ -137,6 +137,9 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
            }
            .a4-preview .preview-content-block {
              margin-bottom: 0.6rem !important; 
+           }
+           .a4-preview .report-type-spacing { /* Added class for report type div */
+             margin-bottom: 1.2rem !important; /* Increase space after report type for small devices */
            }
         }
         
