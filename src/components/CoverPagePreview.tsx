@@ -61,9 +61,9 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
 
       {/* Course Details */}
       {(data.courseTitle || data.courseCode) && (
-        <div className="mb-12 text-xl text-center preview-content-block course-details-block"> {/* Removed space-y-1, changed mb-10 to mb-12 */}
+        <div className="mb-12 text-xl text-center preview-content-block course-details-block">
           {data.courseTitle && <p><span className="font-semibold">Course Title:</span> {data.courseTitle}</p>}
-          {data.courseCode && <p className="mt-0.5"><span className="font-semibold">Course Code:</span> {data.courseCode}</p>} {/* Added small top margin if no space-y */}
+          {data.courseCode && <p className="mt-0.5"><span className="font-semibold">Course Code:</span> {data.courseCode}</p>}
         </div>
       )}
 
@@ -122,27 +122,27 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
             padding: 2% !important; 
             border-width: 1px !important; 
           }
-           .a4-preview .university-name-heading { font-size: 1.4rem !important; } /* Increased */
-           .a4-preview .main-department-heading { font-size: 1.3rem !important; } /* Increased */
-           .a4-preview .report-type-heading { font-size: 1.35rem !important; } /* Was h2, specific class now */
-           .a4-preview h3 { font-size: 1.2rem !important; } /* Submitted To/By Headings */
-           .a4-preview p { font-size: 1.1rem !important; } /* General text, including course title/code text */
-           .a4-preview .text-base { font-size: 1.0rem !important; } /* Smaller details */
-           .a4-preview .text-lg { font-size: 1.1rem !important; } /* Submission date */
-           .a4-preview .text-xl { font-size: 1.2rem !important; } /* Names in submitted to/by, course details block base size */
+           .a4-preview .university-name-heading { font-size: 1.4rem !important; } 
+           .a4-preview .main-department-heading { font-size: 1.3rem !important; } 
+           .a4-preview .report-type-heading { font-size: 1.35rem !important; } 
+           .a4-preview h3 { font-size: 1.2rem !important; } 
+           .a4-preview p { font-size: 1.1rem !important; } 
+           .a4-preview .text-base { font-size: 1.0rem !important; } 
+           .a4-preview .text-lg { font-size: 1.1rem !important; } 
+           .a4-preview .text-xl { font-size: 1.2rem !important; } 
            
            .a4-preview .university-logo-img {
-             width: 55px !important; /* Increased from 45px */
-             height: 55px !important; /* Increased from 45px */
+             width: 60px !important; 
+             height: 60px !important; 
            }
            .a4-preview .preview-content-block {
              margin-bottom: 0.6rem !important; 
            }
-           .a4-preview .university-header-block { margin-bottom: 1rem !important; } /* Increased space after uni details */
+           .a4-preview .university-header-block { margin-bottom: 1rem !important; } 
            .a4-preview .report-type-spacing {
              margin-bottom: 1.2rem !important; 
            }
-           .a4-preview .course-details-block { margin-bottom: 1rem !important; } /* Increased from 0.8rem */
+           .a4-preview .course-details-block { margin-bottom: 1.2rem !important; } 
         }
         
         #coverPageA4, #coverPageA4 * {
