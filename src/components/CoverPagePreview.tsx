@@ -34,7 +34,7 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
       }}
     >
       {/* University Header */}
-      <div className="text-center mb-6 preview-content-block">
+      <div className="text-center mb-6 preview-content-block university-header-block">
         <div className="flex flex-col items-center justify-center gap-1 mb-2">
             <img
                 id="universityLogoImage"
@@ -47,23 +47,23 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
                   target.onerror = null;
                 }}
             />
-            {data.universityName && <h1 className="text-2xl font-bold text-center">{data.universityName}{data.universityAcronym ? ` (${data.universityAcronym})` : ''}</h1>}
+            {data.universityName && <h1 className="text-2xl font-bold text-center university-name-heading">{data.universityName}{data.universityAcronym ? ` (${data.universityAcronym})` : ''}</h1>}
         </div>
-        {data.mainDepartmentName && <h2 className="text-2xl font-semibold mt-1">{data.mainDepartmentName}</h2>}
+        {data.mainDepartmentName && <h2 className="text-2xl font-semibold mt-1 main-department-heading">{data.mainDepartmentName}</h2>}
       </div>
 
       {/* Report Type */}
       {data.reportType && (
         <div className="text-center mb-10 preview-content-block report-type-spacing">
-          <h2 className="text-2xl font-semibold inline-block border-b-2 border-black pb-1">{data.reportType}</h2>
+          <h2 className="text-2xl font-semibold inline-block border-b-2 border-black pb-1 report-type-heading">{data.reportType}</h2>
         </div>
       )}
 
       {/* Course Details */}
       {(data.courseTitle || data.courseCode) && (
-        <div className="mb-10 text-xl space-y-1 text-center preview-content-block">
+        <div className="mb-12 text-xl text-center preview-content-block course-details-block"> {/* Removed space-y-1, changed mb-10 to mb-12 */}
           {data.courseTitle && <p><span className="font-semibold">Course Title:</span> {data.courseTitle}</p>}
-          {data.courseCode && <p><span className="font-semibold">Course Code:</span> {data.courseCode}</p>}
+          {data.courseCode && <p className="mt-0.5"><span className="font-semibold">Course Code:</span> {data.courseCode}</p>} {/* Added small top margin if no space-y */}
         </div>
       )}
 
@@ -122,13 +122,14 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
             padding: 2% !important; 
             border-width: 1px !important; 
           }
-           .a4-preview h1 { font-size: 1.3rem !important; } /* University Name */
-           .a4-preview h2 { font-size: 1.35rem !important; } /* Report Type & Main Dept Name */
+           .a4-preview .university-name-heading { font-size: 1.4rem !important; } /* Increased */
+           .a4-preview .main-department-heading { font-size: 1.3rem !important; } /* Increased */
+           .a4-preview .report-type-heading { font-size: 1.35rem !important; } /* Was h2, specific class now */
            .a4-preview h3 { font-size: 1.2rem !important; } /* Submitted To/By Headings */
            .a4-preview p { font-size: 1.1rem !important; } /* General text, including course title/code text */
-           .a4-preview .text-base { font-size: 1.0rem !important; } /* Smaller details, was 1.1rem */
-           .a4-preview .text-lg { font-size: 1.1rem !important; } /* Submission date, was 1.2rem */
-           .a4-preview .text-xl { font-size: 1.2rem !important; } /* Names in submitted to/by, was 1.3rem */
+           .a4-preview .text-base { font-size: 1.0rem !important; } /* Smaller details */
+           .a4-preview .text-lg { font-size: 1.1rem !important; } /* Submission date */
+           .a4-preview .text-xl { font-size: 1.2rem !important; } /* Names in submitted to/by, course details block base size */
            
            .a4-preview .university-logo-img {
              width: 55px !important;
@@ -137,9 +138,11 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
            .a4-preview .preview-content-block {
              margin-bottom: 0.6rem !important; 
            }
+           .a4-preview .university-header-block { margin-bottom: 1rem !important; } /* Increased space after uni details */
            .a4-preview .report-type-spacing {
              margin-bottom: 1.2rem !important; 
            }
+           .a4-preview .course-details-block { margin-bottom: 1rem !important; } /* Increased space after course details for small devices */
         }
         
         #coverPageA4, #coverPageA4 * {
