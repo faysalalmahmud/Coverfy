@@ -1,4 +1,4 @@
-# **App Name**: CoverPage Pro
+# **App Name**: Coverfy
 
 ## Core Features:
 
