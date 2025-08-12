@@ -30,8 +30,8 @@ export const initialCoverPageData: CoverPageData = {
   studentDepartment: '',
   studentBatch: '',
   studentSemester: '',
-  universityName: 'SHEIKH FAZILATUNNESA MUJIB UNIVERSITY',
-  universityAcronym: 'SFMU',
+  universityName: 'BRAHMAPUTRA INTERNATIONAL UNIVERSITY',
+  universityAcronym: 'BIU',
   mainDepartmentName: 'Dept. Of Computer Science & Engineering',
   universityLogoUrl: 'images/university-logo.png', // Changed to relative path
   submissionDate: '',
