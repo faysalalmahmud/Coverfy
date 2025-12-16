@@ -113,7 +113,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                 <FormItem>
                   <FormLabel className="flex items-center"><Building className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />University Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., Global State University" {...field} disabled />
+                    <Input placeholder="e.g., Brahmaputra International University" {...field} disabled />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -126,7 +126,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                 <FormItem>
                   <FormLabel className="flex items-center"><Fingerprint className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />University Acronym</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., GSU" {...field} disabled />
+                    <Input placeholder="e.g., BRIU" {...field} disabled />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -139,7 +139,7 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
                 <FormItem>
                   <FormLabel className="flex items-center"><AlignVerticalSpaceAround className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />Main Department Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., Dept. Of Science & Technology" {...field} />
+                    <Input placeholder="e.g., Dept. Of CSE" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

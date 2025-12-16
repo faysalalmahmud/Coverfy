@@ -152,10 +152,10 @@ export default function CoverPageProApp() {
           >
             Faysal Al Mahmud
           </a>
-          , CSE09, BIU.
+          , CSE09, BRIU.
         </p>
         <p>&copy; {new Date().getFullYear()} Coverfy. All rights reserved.</p>
-        <p>All credit goes to Team Musketeer, Gemini and BIU Computer Club.</p>
+        <p>All credit goes to Team Musketeer, Gemini and BRIU Computer Club.</p>
       </footer>
     </div>
   );
