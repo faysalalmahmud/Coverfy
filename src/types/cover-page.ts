@@ -32,7 +32,7 @@ export const initialCoverPageData: CoverPageData = {
   studentSemester: '',
   universityName: 'BRAHMAPUTRA INTERNATIONAL UNIVERSITY',
   universityAcronym: 'BRIU',
-  mainDepartmentName: 'Dept. Of Computer Science & Engineering',
+  mainDepartmentName: 'Dept. of Computer Science & Engineering',
   universityLogoUrl: 'images/university-logo.png', // Changed to relative path
   submissionDate: '',
 };

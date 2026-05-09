@@ -73,6 +73,18 @@ interface CoverPageFormProps {
   initialData: CoverPageData;
 }
 
+const departmentOptions = [
+  "Dept. of Computer Science & Engineering",
+  "Dept. of Electrical and Electronic Engineering (EEE)",
+  "Department of Law",
+  "Dept. of Business Administration",
+  "Department of English",
+  "Department of Fine Arts",
+  "Department of Economics",
+  "Department of Political Science",
+  "Department of Library Management and Information Science",
+];
+
 const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData }) => {
   const form = useForm<CoverPageData>({
     resolver: zodResolver(formSchema),
@@ -138,9 +150,18 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="flex items-center"><AlignVerticalSpaceAround className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />Main Department Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., Dept. Of CSE" {...field} />
-                  </FormControl>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select department" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {departmentOptions.map((dept) => (
+                        <SelectItem key={dept} value={dept}>{dept}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
@@ -268,9 +289,18 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="flex items-center"><Building2 className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />Department</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., Computer Science & Engineering" {...field} />
-                  </FormControl>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select department" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {departmentOptions.map((dept) => (
+                        <SelectItem key={dept} value={dept}>{dept}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
@@ -316,9 +346,18 @@ const CoverPageForm: React.FC<CoverPageFormProps> = ({ onDataChange, initialData
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="flex items-center"><GraduationCap className="mr-2 h-4 w-4" style={{ color: '#180c52' }} />Department</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., Computer Science & Engineering" {...field} />
-                  </FormControl>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select department" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {departmentOptions.map((dept) => (
+                        <SelectItem key={dept} value={dept}>{dept}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
