@@ -1,21 +1,47 @@
 
 "use client";
 
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useRef, useState, useEffect, useCallback } from 'react';
 import type { CoverPageData } from '@/types/cover-page';
-// Using standard img tag for better compatibility with html2pdf.js
 
 interface CoverPagePreviewProps {
   data: CoverPageData;
 }
 
 const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ data }, ref) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  const updateScale = useCallback(() => {
+    if (wrapperRef.current) {
+      const containerWidth = wrapperRef.current.offsetWidth;
+      const a4WidthPx = 190 * 3.7795; // 190mm in px (~718px)
+      if (containerWidth < a4WidthPx) {
+        setScale(containerWidth / a4WidthPx);
+      } else {
+        setScale(1);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, [updateScale]);
 
   const displaySubmissionDate = data.submissionDate || 'N/A';
   const logoSrc = data.universityLogoUrl || "https://placehold.co/80x80.png";
 
 
+  const a4HeightPx = 277 * 3.7795; // ~1047px
+
   return (
+    <div
+      ref={wrapperRef}
+      className="a4-preview-wrapper"
+      style={{ height: scale < 1 ? `${a4HeightPx * scale}px` : 'auto' }}
+    >
     <div
       ref={ref}
       id="coverPageA4"
@@ -23,14 +49,16 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
       style={{
         width: '190mm',
         minHeight: '277mm',
-        height: '277mm', // Ensure fixed height to help with single-page PDF
+        height: '277mm',
         boxSizing: 'border-box',
         fontFamily: "'Times New Roman', Times, serif",
-        fontSize: '12pt', // Base font size for PDF
-        border: '4px solid black', // Increased border thickness
-        padding: '10mm', // Internal padding to act as page margins
+        fontSize: '12pt',
+        border: '4px solid black',
+        padding: '10mm',
         WebkitFontSmoothing: 'antialiased',
         MozOsxFontSmoothing: 'grayscale',
+        transformOrigin: 'top left',
+        transform: scale < 1 ? `scale(${scale})` : 'none',
       }}
     >
       {/* University Header */}
@@ -99,8 +127,8 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
 
       <style jsx global>{`
         .university-logo-img {
-          width: 80px; 
-          height: 80px; 
+          width: 80px;
+          height: 80px;
           object-fit: contain;
         }
         @media print {
@@ -109,46 +137,15 @@ const CoverPagePreview = forwardRef<HTMLDivElement, CoverPagePreviewProps>(({ da
             print-color-adjust: exact;
           }
           .a4-preview {
-            box-shadow: none !important; 
+            box-shadow: none !important;
           }
         }
-        
-        @media (max-width: 850px) { 
-          .a4-preview {
-            width: 100%;
-            height: auto;
-            min-height: 0;
-            aspect-ratio: 190 / 277;
-            padding: 2% !important; 
-            border-width: 4px !important;
-          }
-           .a4-preview .university-name-heading { font-size: 1.5rem !important; } 
-           .a4-preview .main-department-heading { font-size: 1.4rem !important; } 
-           .a4-preview .report-type-heading { font-size: 1.45rem !important; } 
-           .a4-preview h3 { font-size: 1.3rem !important; } 
-           .a4-preview p { font-size: 1.2rem !important; } 
-           .a4-preview .text-base { font-size: 1.1rem !important; } 
-           .a4-preview .text-lg { font-size: 1.2rem !important; } 
-           .a4-preview .text-xl { font-size: 1.3rem !important; } 
-           
-           .a4-preview .university-logo-img {
-             width: 75px !important; 
-             height: 75px !important; 
-           }
-           .a4-preview .preview-content-block {
-             margin-bottom: 0.6rem !important; 
-           }
-           .a4-preview .university-header-block { margin-bottom: 1rem !important; } 
-           .a4-preview .report-type-spacing {
-             margin-bottom: 1.2rem !important; 
-           }
-           .a4-preview .course-details-block { margin-bottom: 1.8rem !important; } 
-        }
-        
+
         #coverPageA4, #coverPageA4 * {
           color: #000000 !important;
         }
  `}</style>
+    </div>
     </div>
   );
 });

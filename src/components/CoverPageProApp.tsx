@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import type { CoverPageData } from '@/types/cover-page';
 import { initialCoverPageData } from '@/types/cover-page';
 import CoverPageForm from '@/components/CoverPageForm';
@@ -71,21 +71,39 @@ export default function CoverPageProApp() {
 
     try {
       const html2pdf = (await import('html2pdf.js')).default;
+
+      // Force A4 dimensions on the element before PDF generation (removes any responsive scaling)
+      const originalStyle = element.getAttribute('style') || '';
+      element.style.width = '190mm';
+      element.style.minHeight = '277mm';
+      element.style.height = '277mm';
+      element.style.padding = '10mm';
+      element.style.border = '4px solid black';
+      element.style.fontSize = '12pt';
+      element.style.boxSizing = 'border-box';
+      element.style.overflow = 'visible';
+      element.style.transform = 'none';
+      element.style.transformOrigin = 'top left';
+
       const opt = {
         margin: 10,
         filename: `${formData.courseCode || 'course'}_${formData.reportType || 'report'}_cover.pdf`,
-        image: { type: 'png' }, 
+        image: { type: 'png' },
         html2canvas: {
-          scale: 1.5, // Changed from 2 to 1.5
+          scale: 2,
           useCORS: true,
           logging: false,
-          imageTimeout: 0, 
+          imageTimeout: 0,
+          windowWidth: 900,
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
       };
 
       await html2pdf().from(element).set(opt).save();
+
+      // Restore original styles after PDF generation
+      element.setAttribute('style', originalStyle);
       toast({
         title: "Download Started",
         description: "Your PDF cover page is being downloaded.",
@@ -118,9 +136,9 @@ export default function CoverPageProApp() {
         </div>
       </header>
 
-      <main className="flex-grow container mx-auto p-4 md:p-8">
-        <div className="grid lg:grid-cols-5 gap-8">
-          <div className="lg:col-span-2">
+      <main className="flex-grow container mx-auto p-2 sm:p-4 md:p-8">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-8">
+          <div className="lg:col-span-2 order-1">
             <CoverPageForm onDataChange={setFormData} initialData={formData} />
             <div className="mt-6 flex justify-center">
               <Button onClick={handleDownloadPdf} variant="outline" size="lg" className="w-full">
@@ -128,12 +146,12 @@ export default function CoverPageProApp() {
               </Button>
             </div>
           </div>
-          <div className="lg:col-span-3">
-            <div className="sticky top-8">
+          <div className="lg:col-span-3 order-2">
+            <div className="lg:sticky lg:top-8">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-semibold">Preview</h2>
               </div>
-              <div className="bg-muted p-2 md:p-4 rounded-lg shadow-inner overflow-x-auto">
+              <div className="bg-muted p-2 md:p-4 rounded-lg shadow-inner overflow-hidden">
                  <CoverPagePreview ref={coverPageRef} data={formData} />
               </div>
             </div>
